@@ -1,13 +1,15 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 
 import { emailRegExp } from "../Login/Login";
+import { useRegister } from "../../hooks/useRegister";
 import FormField from "../FormFields";
 
 import { RegisterWrapper } from "./Register.style";
 
-interface IForm {
-  userName: string;
+export interface IForm {
+  name: string;
   email: string;
   password: string;
 }
@@ -19,8 +21,12 @@ const Register: FC = () => {
     formState: { errors },
   } = useForm<IForm>();
 
-  const submitForm = (data: IForm) => {
-    console.log(data);
+  const submitForm = async (data: IForm) => {
+    const responseText = await useRegister(data);
+
+    if (responseText?.length > 0) {
+      toast.success(responseText);
+    }
   };
 
   return (
@@ -29,14 +35,14 @@ const Register: FC = () => {
         <FormField
           type="text"
           register={{
-            ...register("userName", {
+            ...register("name", {
               required: "Name is required",
               minLength: { value: 3, message: "Name is too short" },
               maxLength: { value: 15, message: "Name is too long" },
             }),
           }}
           label="Enter your Name"
-          error={errors?.userName?.message}
+          error={errors?.name?.message}
         />
         <FormField
           type="email"
@@ -65,6 +71,7 @@ const Register: FC = () => {
         />
         <button type="submit">Register</button>
       </form>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </RegisterWrapper>
   );
 };

@@ -22,7 +22,7 @@ const NavBar: FC = () => {
 
   return (
     <NavWrapper>
-      <img src={BrandLogo} title="weblogee" />
+      <img src={BrandLogo} title="weblogee" onClick={() => navigate("/")} />
       <UserInfo>
         {token && (
           <>
