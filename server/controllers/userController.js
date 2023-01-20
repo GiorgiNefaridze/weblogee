@@ -1,5 +1,3 @@
-import bcrypt from "bcrypt";
-
 import { generateHashPassword } from "../utils/generateHash.js";
 
 import Users from "../models/User.js";
@@ -9,18 +7,18 @@ export const register = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (
-      !name.trim().length ||
-      !email.trim().length ||
-      !password.trim().length
+      name?.trim().length < 1 ||
+      email?.trim().length < 1 ||
+      password?.trim().length < 1
     ) {
       throw new Error("All fileds are required");
     }
 
-    if (name.trim().length < 3) {
+    if (name?.trim().length < 3) {
       throw new Error("Name is too short");
     }
 
-    if (name.trim().length > 10) {
+    if (name?.trim().length > 15) {
       throw new Error("Name is too long");
     }
 
@@ -40,7 +38,7 @@ export const register = async (req, res) => {
       password: hashedPassword,
     }).save();
 
-    res.status(201).json({ status: "success" });
+    res.status(201).json({ status: "User created successfully" });
   } catch (error) {
     res.status(500).json({
       message: error.message,
