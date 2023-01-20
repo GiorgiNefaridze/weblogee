@@ -4,18 +4,13 @@ export const NavWrapper = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 40px;
+  padding: 20px 40px;
   font-family: "Roboto", sans-serif;
+  border-bottom: 0.1px solid #a1a1a147;
 
   img {
     width: 10rem;
     cursor: pointer;
-  }
-
-  img[title="weblogee"] {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
   }
 `;
 
@@ -23,13 +18,18 @@ export const UserInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0 15px;
+  gap: 0 25px;
 
-  span {
-    font-weight: 700;
+  div {
+    display: flex;
+    align-items: center;
 
-    &::first-letter {
-      text-transform: uppercase;
+    span {
+      font-weight: 500;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
     }
   }
 `;
@@ -44,11 +44,16 @@ export const CreateBlog = styled.div`
   cursor: pointer;
 
   p {
-    font-size: 15px;
-    font-weight: 400;
+    font-size: 14.5px;
+    font-weight: 500;
   }
 
   span {
     font-size: 18px;
+  }
+
+  &:hover {
+    background-color: #a1a1a147;
+    box-shadow: 7px 5px 14px #f5f5f5;
   }
 `;

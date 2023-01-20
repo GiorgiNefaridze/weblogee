@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 
 import { GlobalStyles } from "./App.style";
 
