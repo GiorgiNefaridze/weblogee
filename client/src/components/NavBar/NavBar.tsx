@@ -28,7 +28,7 @@ const NavBar: FC = () => {
           <>
             <div>
               <span>name</span>
-              <UserAvatar />
+              {/* <UserAvatar /> */}
             </div>
             <CreateBlog>
               <p>Create</p>
