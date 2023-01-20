@@ -2,15 +2,16 @@ import { FC } from "react";
 import { TextField } from "@mui/material";
 
 interface IProps {
+  type: string;
   label: string;
   register: any;
   error: string | undefined;
 }
 
-const FormField: FC<IProps> = ({ label, register, error }) => {
+const FormField: FC<IProps> = ({ type, label, register, error }) => {
   return (
     <>
-      <TextField label={label} {...register} />
+      <TextField type={type} label={label} {...register} />
       {error && <span style={{ color: "red" }}>{error}</span>}
     </>
   );

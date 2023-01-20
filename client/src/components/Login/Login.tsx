@@ -9,7 +9,7 @@ interface IForm {
   password: string;
 }
 
-const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+export const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 const Login = () => {
   const {
@@ -26,6 +26,7 @@ const Login = () => {
     <LoginWrapper>
       <form onSubmit={handleSubmit(submitForm)}>
         <FormField
+          type="text"
           register={{
             ...register("email", {
               required: "Email is required",
@@ -36,6 +37,7 @@ const Login = () => {
           error={errors?.email?.message}
         />
         <FormField
+          type="password"
           register={{
             ...register("password", {
               required: "Password is required",
