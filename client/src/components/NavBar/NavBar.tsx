@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { FiUserPlus } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 import UserAvatar from "./UserAvatar";
 
@@ -8,6 +9,16 @@ import { NavWrapper, UserInfo, CreateBlog } from "./NavBar.style";
 
 const NavBar: FC = () => {
   const token = localStorage.getItem("token");
+
+  const navigate = useNavigate();
+
+  const login = () => {
+    navigate("/login");
+  };
+
+  const register = () => {
+    navigate("/register");
+  };
 
   return (
     <NavWrapper>
@@ -28,11 +39,11 @@ const NavBar: FC = () => {
 
         {!token && (
           <>
-            <CreateBlog>
+            <CreateBlog onClick={login}>
               <p>Login</p>
               <span className="material-symbols-outlined">login</span>
             </CreateBlog>
-            <CreateBlog>
+            <CreateBlog onClick={register}>
               <p>Register</p>
               <FiUserPlus />
             </CreateBlog>
