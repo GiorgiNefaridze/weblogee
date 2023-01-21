@@ -22,11 +22,14 @@ const Register: FC = () => {
   } = useForm<IForm>();
 
   const submitForm = async (data: IForm) => {
-    const responseText = await useRegister(data);
+    const { status, message } = await useRegister(data);
 
-    if (responseText?.length > 0) {
-      toast.success(responseText);
+    if (message?.length > 0 && status === 201) {
+      toast.success(message);
+      return;
     }
+
+    toast.error(message);
   };
 
   return (

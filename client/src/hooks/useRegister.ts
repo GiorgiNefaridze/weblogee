@@ -1,9 +1,21 @@
-import { axiosInstance } from "../api/axiosInstance";
+import { isAxiosError } from "axios";
 
+import { axiosInstance } from "../api/axiosInstance";
 import { IForm } from "../components/Register/Register";
 
-export const useRegister = async (userData: IForm) => {
-  const { data } = await axiosInstance().post("/api/user/register", userData);
+interface IRegister {
+  (userData: IForm): Promise<{ message: string; status: number }>;
+}
 
-  return data?.status;
+export const useRegister: IRegister = async (userData) => {
+  try {
+    const { data } = await axiosInstance().post("/api/user/register", userData);
+
+    return { message: data?.status, status: 201 };
+  } catch (err) {
+    return {
+      message: isAxiosError(err) ? err?.response?.data.message : null,
+      status: 500,
+    };
+  }
 };
