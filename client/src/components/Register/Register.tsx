@@ -1,12 +1,13 @@
-import { FC } from "react";
+import { FC, ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { FaFileUpload } from "react-icons/fa";
 
 import { emailRegExp } from "../Login/Login";
 import { useRegister } from "../../hooks/useRegister";
 import FormField from "../FormFields";
 
-import { RegisterWrapper } from "./Register.style";
+import { RegisterWrapper, UploadImage } from "./Register.style";
 
 export interface IForm {
   name: string;
@@ -15,6 +16,8 @@ export interface IForm {
 }
 
 const Register: FC = () => {
+  const [image, setImage] = useState<string | ArrayBuffer>("");
+
   const {
     register,
     handleSubmit,
@@ -30,6 +33,22 @@ const Register: FC = () => {
     }
 
     toast.error(message);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { files } = e?.target;
+
+    const reader = new FileReader();
+    if (files) {
+      reader.readAsDataURL(files[0]);
+      reader.onload = (e) => {
+        const result = reader?.result;
+
+        if (result) {
+          setImage(result);
+        }
+      };
+    }
   };
 
   return (
@@ -72,6 +91,16 @@ const Register: FC = () => {
           label="Enter your password"
           error={errors?.password?.message}
         />
+        <UploadImage fillWithGreen={image.toString().length > 0}>
+          <input
+            onChange={handleChange}
+            style={{ display: "none" }}
+            type="file"
+            id="ipload_image"
+          />
+          <label htmlFor="ipload_image">Upload image</label>
+          <FaFileUpload />
+        </UploadImage>
         <button type="submit">Register</button>
       </form>
       <Toaster position="bottom-right" reverseOrder={false} />
