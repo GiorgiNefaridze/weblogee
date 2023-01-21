@@ -1,12 +1,17 @@
 import cloudinary from "cloudinary";
 
 import { generateHashPassword } from "../utils/generateHash.js";
+import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
 
 import Users from "../models/User.js";
+
+cloudinaryConfigurations();
 
 export const register = async (req, res) => {
   try {
     const { name, email, password, image } = req.body;
+
+    let imageUrl = "";
 
     if (
       name?.trim().length < 1 ||
@@ -34,24 +39,20 @@ export const register = async (req, res) => {
 
     const hashedPassword = await generateHashPassword(password);
 
-    const res = cloudinary.uploader.upload(image, {
-      public_id: email,
-    });
+    if (image.length > 0) {
+      imageUrl = (
+        await cloudinary.uploader.upload(image, {
+          public_id: email,
+        })
+      ).secure_url;
+    }
 
-    res
-      .then((data) => {
-        console.log(data);
-        // console.log(data.secure_url);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // await new Users({
-    //   name,
-    //   email,
-    //   password: hashedPassword,
-    // }).save();
+    await new Users({
+      name,
+      email,
+      password: hashedPassword,
+      image: imageUrl,
+    }).save();
 
     res.status(201).json({ status: "User created successfully" });
   } catch (error) {
