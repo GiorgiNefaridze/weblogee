@@ -13,6 +13,7 @@ export interface IForm {
   name: string;
   email: string;
   password: string;
+  image: string | ArrayBuffer;
 }
 
 const Register: FC = () => {
@@ -22,10 +23,12 @@ const Register: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IForm>();
 
   const submitForm = async (data: IForm) => {
-    const { status, message } = await useRegister(data);
+    const { status, message } = await useRegister({ ...data, image });
+    reset({ name: "", email: "", password: "", image: "" });
 
     if (message?.length > 0 && status === 201) {
       toast.success(message);
