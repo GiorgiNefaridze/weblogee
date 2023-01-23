@@ -85,8 +85,6 @@ export const login = async (req, res) => {
 
       res.status(200).json({ token: jwt });
     }
-
-    // res.status(500).json({ message: "Login successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
