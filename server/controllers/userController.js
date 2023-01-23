@@ -1,7 +1,8 @@
 import cloudinary from "cloudinary";
 
-import { generateHashPassword } from "../utils/generateHash.js";
 import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
+import { generateHashPassword } from "../utils/generateHash.js";
+import { compareHashedPassword } from "../utils/compareHashPassword";
 
 import Users from "../models/User.js";
 
@@ -69,7 +70,17 @@ export const login = async (req, res) => {
     if (email?.trim().length < 1 || password?.trim().length < 1) {
       throw new Error("All fileds are required");
     }
-    
+
+    const user = await Users.findOne({ email });
+
+    const userPassword = await compareHashedPassword(password, user?.password);
+
+    if(user && email === user?.email && userPassword) {
+      res.status(200).json({})
+    }else{
+      res.status(500).json({message: "Something went wrong"})
+    }
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
