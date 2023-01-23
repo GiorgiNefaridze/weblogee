@@ -63,5 +63,14 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  res.send("Login");
+  try {
+    const { email, password } = req.body;
+
+    if (email?.trim().length < 1 || password?.trim().length < 1) {
+      throw new Error("All fileds are required");
+    }
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
