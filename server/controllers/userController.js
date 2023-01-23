@@ -2,7 +2,8 @@ import cloudinary from "cloudinary";
 
 import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
 import { generateHashPassword } from "../utils/generateHash.js";
-import { compareHashedPassword } from "../utils/compareHashPassword";
+import { compareHashedPassword } from "../utils/compareHashPassword.js";
+import { generateJWT } from "../utils/generateJWT.js";
 
 import Users from "../models/User.js";
 
@@ -75,12 +76,17 @@ export const login = async (req, res) => {
 
     const userPassword = await compareHashedPassword(password, user?.password);
 
-    if(user && email === user?.email && userPassword) {
-      res.status(200).json({})
-    }else{
-      res.status(500).json({message: "Something went wrong"})
+    if (email !== user?.email || !userPassword) {
+      throw new Error("Information is incorrect");
     }
 
+    if (user && email === user?.email && userPassword) {
+      const jwt = generateJWT(user?._id);
+
+      res.status(200).json({ token: jwt });
+    }
+
+    // res.status(500).json({ message: "Login successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
