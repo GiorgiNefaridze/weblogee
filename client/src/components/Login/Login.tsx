@@ -1,25 +1,38 @@
+import { FC } from "react";
 import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import FormField from "../FormFields";
+import { useLogin } from "../../hooks/useLogin";
 
 import { LoginWrapper } from "./Login.style";
 
-interface IForm {
+export interface IForm {
   email: string;
   password: string;
 }
 
 export const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-const Login = () => {
+const Login: FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IForm>();
 
-  const submitForm = (data: IForm) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const submitForm = async (data: IForm) => {
+    const { status, message } = await useLogin(data);
+
+    if (status === 500) {
+      toast.error(message);
+      return;
+    }
+
+    navigate("/");
   };
 
   return (
@@ -52,6 +65,7 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
+      <Toaster position="bottom-right" />
     </LoginWrapper>
   );
 };

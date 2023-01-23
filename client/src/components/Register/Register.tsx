@@ -28,10 +28,11 @@ const Register: FC = () => {
 
   const submitForm = async (data: IForm) => {
     const { status, message } = await useRegister({ ...data, image });
-    reset({ name: "", email: "", password: "", image: "" });
 
     if (message?.length > 0 && status === 201) {
+      reset({ name: "", email: "", password: "", image: "" });
       toast.success(message);
+      setImage("");
       return;
     }
 
