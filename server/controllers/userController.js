@@ -4,6 +4,7 @@ import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
 import { generateHashPassword } from "../utils/generateHash.js";
 import { compareHashedPassword } from "../utils/compareHashPassword.js";
 import { getValidToken } from "../utils/getValidToken.js";
+import { veryfyToken } from "../utils/verifyJWT.js";
 import { generateJWT } from "../utils/generateJWT.js";
 
 import Users from "../models/User.js";
@@ -95,9 +96,19 @@ export const getUserData = async (req, res) => {
   try {
     const headers = req.headers;
 
-    const responseData = getValidToken(headers);
+    const data = getValidToken(headers);
 
-    const user = await Users.findOne({ email });
+    if (data.length > 1) {
+      const userId = veryfyToken(data);
+
+      const user = await Users.findOne({ _id: userId?.id });
+
+      res
+        .status(200)
+        .json({ email: user.email, name: user.name, image: user.image });
+    } else {
+      throw new Error("Token is invalid");
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
