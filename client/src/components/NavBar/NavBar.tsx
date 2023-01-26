@@ -3,6 +3,7 @@ import { FiUserPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 import UserAvatar from "./UserAvatar";
+import { axiosInstance } from "../../api/axiosInstance";
 
 import BrandLogo from "../../../public/brand_name.jpg";
 import { NavWrapper, UserInfo, CreateBlog } from "./NavBar.style";
@@ -20,6 +21,10 @@ const NavBar: FC = () => {
     navigate("/register");
   };
 
+  const createBlog = async () => {
+    await axiosInstance().post("/api/user/user-data");
+  };
+
   return (
     <NavWrapper>
       <img src={BrandLogo} title="weblogee" onClick={() => navigate("/")} />
@@ -30,7 +35,7 @@ const NavBar: FC = () => {
               <span>name</span>
               {/* <UserAvatar /> */}
             </div>
-            <CreateBlog>
+            <CreateBlog onClick={createBlog}>
               <p>Create</p>
               <span className="material-symbols-outlined">edit_document</span>
             </CreateBlog>
