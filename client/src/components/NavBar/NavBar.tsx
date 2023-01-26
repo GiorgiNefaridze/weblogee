@@ -3,13 +3,15 @@ import { FiUserPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 import UserAvatar from "./UserAvatar";
-import { axiosInstance } from "../../api/axiosInstance";
+import { UserContext } from "../../context/userContext";
 
 import BrandLogo from "../../../public/brand_name.jpg";
 import { NavWrapper, UserInfo, CreateBlog } from "./NavBar.style";
 
 const NavBar: FC = () => {
   const token = localStorage.getItem("token");
+
+  const { user } = UserContext();
 
   const navigate = useNavigate();
 
@@ -21,19 +23,17 @@ const NavBar: FC = () => {
     navigate("/register");
   };
 
-  const createBlog = async () => {
-    await axiosInstance().post("/api/user/user-data");
-  };
+  const createBlog = async () => {};
 
   return (
     <NavWrapper>
       <img src={BrandLogo} title="weblogee" onClick={() => navigate("/")} />
       <UserInfo>
-        {token && (
+        {Object.keys(user)?.length && (
           <>
             <div>
-              <span>name</span>
-              {/* <UserAvatar /> */}
+              <span>{user?.name}</span>
+              <UserAvatar />
             </div>
             <CreateBlog onClick={createBlog}>
               <p>Create</p>
@@ -42,7 +42,7 @@ const NavBar: FC = () => {
           </>
         )}
 
-        {!token && (
+        {!Object.keys(user)?.length && (
           <>
             <CreateBlog onClick={login}>
               <p>Login</p>

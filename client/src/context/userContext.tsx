@@ -1,4 +1,6 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
+
+import { useFetchUser } from "../hooks/useFetchUser";
 
 interface IProps {
   children: React.ReactNode;
@@ -15,18 +17,29 @@ interface IUserContext {
   setUser: React.Dispatch<React.SetStateAction<IUser>>;
 }
 
-const userContexts = createContext<IUserContext>({} as IUserContext);
+const userContext = createContext<IUserContext>({} as IUserContext);
 
 export const UserContext = () => {
-  return useContext(userContexts);
+  return useContext(userContext);
 };
 
 export const UserContextProvider = ({ children }: IProps) => {
   const [user, setUser] = useState<IUser>({} as IUser);
 
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    (async () => {
+      if (token) {
+        const data = await useFetchUser();
+        setUser(data);
+      }
+    })();
+  }, [token, user?.email]);
+
   return (
-    <userContexts.Provider value={{ user, setUser }}>
+    <userContext.Provider value={{ user, setUser }}>
       {children}
-    </userContexts.Provider>
+    </userContext.Provider>
   );
 };

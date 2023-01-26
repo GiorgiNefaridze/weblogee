@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 
-import { IForm } from ".././components/Login/Login";
+import { IForm } from "../components/Login/Login";
 import { axiosInstance } from "../api/axiosInstance";
 
 interface ILogin {
@@ -11,7 +11,9 @@ export const useLogin: ILogin = async (userData) => {
   try {
     const { data } = await axiosInstance().post("/api/user/login", userData);
 
-    localStorage.setItem("token", data?.token);
+    if (Object.keys(data).length) {
+      localStorage.setItem("token", data?.token);
+    }
 
     return { status: 200, message: "User logined successfully" };
   } catch (error) {

@@ -27,7 +27,7 @@ const Login: FC = () => {
   const submitForm = async (data: IForm) => {
     const { status, message } = await useLogin(data);
 
-    if (status === 500) {
+    if (status === 500 && message?.length) {
       toast.error(message);
       return;
     }
