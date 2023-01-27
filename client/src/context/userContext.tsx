@@ -9,6 +9,7 @@ interface IProps {
 export interface IUser {
   name: string;
   email: string;
+  auth: boolean;
   image?: string | null;
 }
 
@@ -24,7 +25,12 @@ export const UserContext = () => {
 };
 
 export const UserContextProvider = ({ children }: IProps) => {
-  const [user, setUser] = useState<IUser>({} as IUser);
+  const [user, setUser] = useState<IUser>({
+    name: "",
+    email: "",
+    image: null,
+    auth: false,
+  });
 
   const token = localStorage.getItem("token");
 
@@ -32,7 +38,7 @@ export const UserContextProvider = ({ children }: IProps) => {
     (async () => {
       if (token) {
         const data = await useFetchUser();
-        setUser(data);
+        setUser({ ...data, auth: true });
       }
     })();
   }, [token, user?.email]);

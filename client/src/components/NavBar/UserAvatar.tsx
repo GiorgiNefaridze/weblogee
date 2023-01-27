@@ -10,7 +10,7 @@ import { UserContext } from "../../context/userContext";
 const UserAvatar: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const { user } = UserContext();
+  const { user, setUser } = UserContext();
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -18,6 +18,11 @@ const UserAvatar: FC = () => {
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleLogOut = () => {
+    setUser({ email: "", name: "", image: null, auth: false });
+    localStorage.removeItem("token");
   };
 
   return (
@@ -31,10 +36,10 @@ const UserAvatar: FC = () => {
         color="inherit"
       >
         {!user?.image?.length ? (
-          <AccountCircle style={{ fontSize: "30px" }} />
+          <AccountCircle style={{ fontSize: "3px" }} />
         ) : (
           <img
-            style={{ borderRadius: "50%", width: "30px", height: "30px" }}
+            style={{ borderRadius: "50%", width: "35px", height: "35px" }}
             src={user?.image}
           />
         )}
@@ -56,7 +61,7 @@ const UserAvatar: FC = () => {
         onClose={handleClose}
       >
         <MenuItem>Profile</MenuItem>
-        <MenuItem>Log out</MenuItem>
+        <MenuItem onClick={handleLogOut}>Log out</MenuItem>
       </Menu>
     </div>
   );

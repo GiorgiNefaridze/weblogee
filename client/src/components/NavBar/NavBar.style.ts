@@ -18,7 +18,7 @@ export const UserInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0 25px;
+  gap: 0 35px;
 
   div {
     display: flex;

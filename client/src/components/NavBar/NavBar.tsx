@@ -9,8 +9,6 @@ import BrandLogo from "../../../public/brand_name.jpg";
 import { NavWrapper, UserInfo, CreateBlog } from "./NavBar.style";
 
 const NavBar: FC = () => {
-  const token = localStorage.getItem("token");
-
   const { user } = UserContext();
 
   const navigate = useNavigate();
@@ -29,7 +27,7 @@ const NavBar: FC = () => {
     <NavWrapper>
       <img src={BrandLogo} title="weblogee" onClick={() => navigate("/")} />
       <UserInfo>
-        {Object.keys(user)?.length && (
+        {user?.auth && (
           <>
             <div>
               <span>{user?.name}</span>
@@ -42,7 +40,7 @@ const NavBar: FC = () => {
           </>
         )}
 
-        {!Object.keys(user)?.length && (
+        {!user?.auth && (
           <>
             <CreateBlog onClick={login}>
               <p>Login</p>

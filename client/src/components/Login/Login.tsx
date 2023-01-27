@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import FormField from "../FormFields";
 import { useLogin } from "../../hooks/useLogin";
+import { UserContext } from "../../context/userContext";
 
 import { LoginWrapper } from "./Login.style";
 
@@ -24,12 +25,18 @@ const Login: FC = () => {
 
   const navigate = useNavigate();
 
+  const { setUser } = UserContext();
+
   const submitForm = async (data: IForm) => {
-    const { status, message } = await useLogin(data);
+    const { status, message, user } = await useLogin(data);
 
     if (status === 500 && message?.length) {
       toast.error(message);
       return;
+    }
+
+    if (user && Object.keys(user)?.length) {
+      setUser({ ...user, auth: true });
     }
 
     navigate("/");

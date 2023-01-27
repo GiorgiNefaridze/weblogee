@@ -4,7 +4,11 @@ import { IForm } from "../components/Login/Login";
 import { axiosInstance } from "../api/axiosInstance";
 
 interface ILogin {
-  (userData: IForm): Promise<{ status: number; message: string }>;
+  (userData: IForm): Promise<{
+    status: number;
+    message: string;
+    user: {} | null;
+  }>;
 }
 
 export const useLogin: ILogin = async (userData) => {
@@ -15,11 +19,14 @@ export const useLogin: ILogin = async (userData) => {
       localStorage.setItem("token", data?.token);
     }
 
-    return { status: 200, message: "User logined successfully" };
+    const { data: user } = await axiosInstance().post("/api/user/user-data");
+
+    return { status: 200, message: "User logined successfully", user };
   } catch (error) {
     return {
       status: 500,
       message: isAxiosError(error) ? error.response?.data.message : null,
+      user: null,
     };
   }
 };
