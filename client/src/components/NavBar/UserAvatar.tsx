@@ -36,7 +36,7 @@ const UserAvatar: FC = () => {
         color="inherit"
       >
         {!user?.image?.length ? (
-          <AccountCircle style={{ fontSize: "3px" }} />
+          <AccountCircle style={{ fontSize: "30px" }} />
         ) : (
           <img
             style={{ borderRadius: "50%", width: "35px", height: "35px" }}
