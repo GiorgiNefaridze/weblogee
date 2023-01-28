@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export const Create = styled.div`
+export const Create = styled.form`
   width: 100%;
-  padding-top: 50px;
+  padding-top: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,6 +20,11 @@ export const Content = styled.div`
   h2 {
     font-weight: bold;
     font-size: 1.3em;
+  }
+
+  span {
+    color: red;
+    font-weight: 500;
   }
 `;
 
