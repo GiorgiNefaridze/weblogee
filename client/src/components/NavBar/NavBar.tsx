@@ -21,7 +21,9 @@ const NavBar: FC = () => {
     navigate("/register");
   };
 
-  const createBlog = async () => {};
+  const createBlog = async () => {
+    navigate("/create");
+  };
 
   return (
     <NavWrapper>
