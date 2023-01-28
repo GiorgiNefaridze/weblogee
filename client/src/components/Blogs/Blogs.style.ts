@@ -8,12 +8,12 @@ export const BlogWrapper = styled.div`
 `;
 
 export const ArticlesWrapper = styled.div`
-  width: 60%;
+  width: 75%;
   height: 100vh;
   border-right: 0.1px solid #a1a1a147;
 `;
 
 export const DetailsWrapper = styled.div`
-  width: 40%;
+  width: 25%;
   height: 100vh;
 `;
