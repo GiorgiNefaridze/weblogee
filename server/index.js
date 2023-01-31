@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import users from "./routes/userRoutes.js";
+import blogs from "./routes/blogRoutes.js";
 
 dotenv.config();
 
@@ -22,5 +23,6 @@ app.use(bodyParser({ limit: "10mb" }));
 app.use(express.json());
 
 app.use("/api/user", users);
+app.use("/api/blogs", blogs);
 
 app.listen(port, () => console.log("listening on port " + port));
