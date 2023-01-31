@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface IPros {
+  selected: boolean;
+}
+
 export const Create = styled.form`
   width: 100%;
   padding-top: 35px;
@@ -40,11 +44,15 @@ export const BlogTitle = styled.div`
   }
 `;
 
-export const Thumbnail = styled.div`
+export const Thumbnail = styled.div<IPros | HTMLElement>`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px 0;
+
+  p {
+    color: ${({ selected }) => (selected ? "green" : "black")};
+  }
 `;
 
 export const BlogContent = styled.div`
@@ -66,7 +74,7 @@ export const BlogContent = styled.div`
   }
 `;
 
-export const Image = styled.label`
+export const Image = styled.label<IPros | HTMLElement>`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -74,7 +82,8 @@ export const Image = styled.label`
   justify-content: center;
   gap: 7px 0;
   padding: 15% 0;
-  border: 2px dashed grey;
+  border: ${({ selected }) =>
+    selected ? "2px dashed green" : "2px dashed grey"};
   cursor: pointer;
 
   input {

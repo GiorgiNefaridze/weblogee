@@ -76,10 +76,13 @@ const CreateBlog: FC = () => {
           />
           {errors?.content?.message && <span>{errors.content.message}</span>}
         </BlogContent>
-        <Thumbnail>
+        <Thumbnail selected={image?.toString().length > 0}>
           <h2>Thumbnail</h2>
-          <Image htmlFor="upload">
-            <MdCloudUpload size={50} />
+          <Image htmlFor="upload" selected={image?.toString().length > 0}>
+            <MdCloudUpload
+              size={50}
+              color={image?.toString().length > 0 ? "green" : 'black'}
+            />
             <p>Browse your image here</p>
             <input onChange={handelChange} id="upload" type="file" />
           </Image>
