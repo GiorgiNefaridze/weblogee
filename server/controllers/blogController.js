@@ -9,6 +9,10 @@ import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
 
 cloudinaryConfigurations();
 
+export const getAllBlogs = async (req, res) => {
+  res.send("Hello from controller");
+};
+
 export const createBlog = async (req, res) => {
   try {
     const { title, content, image, categories } = req.body;

@@ -4,7 +4,7 @@ const blogSchema = new Schema({
   author: { type: Schema.Types.ObjectId },
   title: { type: String, required: true },
   content: { type: String, required: true },
-  categories: { type: [], required: true },
+  categories: { type: [String], required: true },
   image: { type: String },
 });
 
