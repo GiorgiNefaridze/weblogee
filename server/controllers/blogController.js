@@ -10,7 +10,25 @@ import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
 cloudinaryConfigurations();
 
 export const getAllBlogs = async (req, res) => {
-  res.send("Hello from controller");
+  const Blog = await Blogs.find({});
+
+  const fetchUser = async () => {
+    const blogDetails = [];
+
+    for (let blog of Blog) {
+      const user = await User.findOne({
+        _id: blog?.author.toString().split("(")[0],
+      }).lean();
+
+      blogDetails.push({ ...user, ...blog });
+    }
+
+    return blogDetails;
+  };
+
+  const result = await fetchUser();
+
+  res.status(200).json(result);
 };
 
 export const createBlog = async (req, res) => {
@@ -52,6 +70,8 @@ export const createBlog = async (req, res) => {
           image: imageUrl,
         }).save();
       }
+    } else {
+      res.json(413).json({ response: "Unauthorized user" });
     }
 
     res.status(201).json({ response: "Blog created successfully" });
