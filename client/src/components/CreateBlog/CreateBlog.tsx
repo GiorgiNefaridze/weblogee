@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -14,14 +15,27 @@ import {
   Footer,
 } from "./CreateBlog.style";
 
+import { axiosInstance } from "../../api/axiosInstance";
+import { Categories, CategoriesWrapper } from "../Filtering/Filtering.style";
+
 const CreateBlog: FC = () => {
   const [image, setImage] = useState<ArrayBuffer | string>("");
+  const [category, setCategory] = useState<string[]>([
+    "design",
+    "development",
+    "devops",
+    "UI/UX",
+    "marketing",
+  ]);
+  const [selectCategory, setSelectCategory] = useState<string[]>([]);
+  const [categoryError, setCategoryError] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -41,8 +55,36 @@ const CreateBlog: FC = () => {
     };
   };
 
-  const submitForm = (data: unknown) => {
-    console.log(data);
+  const submitForm = async (data: any) => {
+    if (selectCategory.length) {
+      try {
+        const { data: Data } = await axiosInstance().post("/api/blogs/create", {
+          ...data,
+          image,
+          selectCategory,
+        });
+
+        if (Data?.response) {
+          toast.success(Data?.response);
+          setSelectCategory([]);
+          setImage("");
+          reset({ title: "", content: "" });
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.error);
+      }
+    } else {
+      setCategoryError(true);
+    }
+  };
+
+  const handleClick = (category: string) => {
+    setCategoryError(false);
+    if (selectCategory.includes(category)) {
+      setSelectCategory((prev) => prev?.filter((cat) => cat !== category));
+    } else {
+      setSelectCategory([...selectCategory, category]);
+    }
   };
 
   return (
@@ -81,17 +123,39 @@ const CreateBlog: FC = () => {
           <Image htmlFor="upload" selected={image?.toString().length > 0}>
             <MdCloudUpload
               size={50}
-              color={image?.toString().length > 0 ? "green" : 'black'}
+              color={image?.toString().length > 0 ? "green" : "black"}
             />
             <p>Browse your image here</p>
             <input onChange={handelChange} id="upload" type="file" />
           </Image>
         </Thumbnail>
+        <CategoriesWrapper>
+          {category?.map((category, idx) => (
+            <Categories
+              key={idx}
+              onClick={() => handleClick(category)}
+              select={selectCategory.includes(category)}
+            >
+              <p
+                style={{ fontWeight: "bold", fontFamily: "Roboto" }}
+                title={category}
+              >
+                {category}
+              </p>
+            </Categories>
+          ))}
+        </CategoriesWrapper>
+        {categoryError && (
+          <span style={{ color: "red", fontWeight: "bold" }}>
+            Select category
+          </span>
+        )}
       </Content>
       <Footer>
         <button onClick={handleCancel}>Cancel</button>
         <button type="submit">Publish</button>
       </Footer>
+      <Toaster position="bottom-right" />
     </Create>
   );
 };
