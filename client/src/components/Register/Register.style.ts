@@ -42,9 +42,7 @@ export const UploadImage = styled.div<IProps | HTMLElement>`
   justify-content: center;
   gap: 0 7px;
   padding: 8px 0px;
-  background-color: ${({ fillWithGreen }) =>
-    fillWithGreen ? "#00cc00" : null};
-  border: 0.2px solid grey;
+  border: 1.6px dashed grey;
   border-radius: 7px;
   cursor: pointer;
 
@@ -52,12 +50,12 @@ export const UploadImage = styled.div<IProps | HTMLElement>`
     font-family: "Roboto", sans-serif;
     font-size: 13px;
     font-weight: 400;
-    color: ${({ fillWithGreen }) => (fillWithGreen ? "white" : "black")};
+    color: ${({ fillWithGreen }) => (fillWithGreen ? "green" : "black")};
     cursor: pointer;
   }
 
   svg {
-    color: ${({ fillWithGreen }) => (fillWithGreen ? "white" : "black")};
+    color: ${({ fillWithGreen }) => (fillWithGreen ? "green" : "black")};
   }
 
   &:hover {

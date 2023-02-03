@@ -5,6 +5,7 @@ interface Iprops {
 }
 
 export const FilteringWrapper = styled.div`
+  width: 100%;
   padding: 25px 0;
   display: flex;
   align-items: center;

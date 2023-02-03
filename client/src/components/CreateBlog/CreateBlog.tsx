@@ -61,7 +61,7 @@ const CreateBlog: FC = () => {
         const { data: Data } = await axiosInstance().post("/api/blogs/create", {
           ...data,
           image,
-          selectCategory,
+          categories: selectCategory,
         });
 
         if (Data?.response) {
