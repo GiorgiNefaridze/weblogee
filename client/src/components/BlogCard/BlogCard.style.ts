@@ -2,11 +2,13 @@ import styled from "styled-components";
 
 export const CardWrapper = styled.div`
   width: 100%;
-  background-color: blue;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  gap: 20px 0;
+  gap: 15px 0;
+  padding: 10px 0;
+  box-sizing: border-box;
+  border-top: 1px solid #a1a1a147;
   font-family: "Roboto", sans-serif;
 `;
 
@@ -40,12 +42,48 @@ export const BlogContent = styled.div`
 
   div {
     width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px 0;
+    padding: 10px 10px 0 0;
+    box-sizing: border-box;
+
+    p {
+      font-size: 18px;
+    }
   }
 
   img {
-    width: 30%;
-    height: 100%;
+    width: 25%;
+    height: 150px;
     object-fit: contain;
     border-radius: 10px;
+    cursor: pointer;
+  }
+
+  h2 {
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+  }
+`;
+
+export const BlogCategories = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 0 5px;
+
+  div {
+    background-color: #727272;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  &::first-letter {
+    text-transform: uppercase;
   }
 `;

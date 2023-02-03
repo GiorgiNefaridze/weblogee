@@ -1,8 +1,15 @@
 import { FC } from "react";
+import { FaUserCircle } from "react-icons/fa";
 
+import NoImage from "../../../public/no_image.jpg";
 import { IData } from "../../hooks/useFetchBlogs";
 
-import { BlogContent, BlogHeader, CardWrapper } from "./BlogCard.style";
+import {
+  BlogCategories,
+  BlogContent,
+  BlogHeader,
+  CardWrapper,
+} from "./BlogCard.style";
 
 const BlogCard: FC<IData> = ({
   title,
@@ -15,7 +22,8 @@ const BlogCard: FC<IData> = ({
   return (
     <CardWrapper>
       <BlogHeader>
-        <img src={avatar} alt="avatar" />
+        {avatar && <img src={avatar} alt="avatar" title={name} />}
+        {!avatar && <FaUserCircle size={35} />}
         <h3>{name}</h3>
       </BlogHeader>
       <BlogContent>
@@ -23,13 +31,13 @@ const BlogCard: FC<IData> = ({
           <h2>{title}</h2>
           <p>{content}</p>
         </div>
-        <img src={image} alt="banner" />
+        <img src={image ? image : NoImage} alt="banner" />
       </BlogContent>
-      {/* <footer>
-        {categories?.map((cat) => (
-          <p>{cat}</p>
+      <BlogCategories>
+        {categories?.map((cat, idx) => (
+          <div key={idx}>{cat}</div>
         ))}
-      </footer> */}
+      </BlogCategories>
     </CardWrapper>
   );
 };

@@ -112,7 +112,7 @@ const CreateBlog: FC = () => {
           <textarea
             {...register("content", {
               required: "Blog content is required",
-              minLength: { value: 10, message: "Content is too short" },
+              minLength: { value: 20, message: "Content is too short" },
             })}
             placeholder="Blog Content Here"
           />
