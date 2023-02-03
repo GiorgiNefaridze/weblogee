@@ -16,6 +16,7 @@ export const ArticlesWrapper = styled.div`
   padding-right: 3%;
   border-right: 0.1px solid #a1a1a147;
   box-sizing: border-box;
+  position: relative;
 `;
 
 export const DetailsWrapper = styled.div`

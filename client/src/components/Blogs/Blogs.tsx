@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 
 import BlogCard from "../BlogCard/BlogCard";
+import Loader from "../Loader/Loader";
 import { useFetchBlogs } from "../../hooks/useFetchBlogs";
 import { IData } from "../../hooks/useFetchBlogs";
 
@@ -26,6 +27,7 @@ const Blogs: FC = () => {
     <BlogWrapper>
       <ArticlesWrapper>
         <Filtering />
+        <Loader />
         <BlogsWrapper>
           {blogcards?.map((blog, idx) => (
             <BlogCard key={idx} {...blog} />

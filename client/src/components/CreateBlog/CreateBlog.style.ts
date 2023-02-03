@@ -6,7 +6,7 @@ interface IPros {
 
 export const Create = styled.form`
   width: 100%;
-  padding-top: 35px;
+  padding: 35px 0px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +97,7 @@ export const Footer = styled.footer`
   justify-content: space-between;
   align-content: center;
   border-top: 1px solid grey;
-  padding: 10px 0;
+  padding: 20px 0;
   button {
     outline: none;
     border: none;
