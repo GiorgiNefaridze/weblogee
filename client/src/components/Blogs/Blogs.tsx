@@ -14,22 +14,51 @@ import {
   BlogsWrapper,
 } from "./Blogs.style";
 
+const category: string[] = [
+  "design",
+  "development",
+  "devops",
+  "UI/UX",
+  "marketing",
+];
+
 const Blogs: FC = () => {
-  const [blogcards, setBlogCards] = useState<IData[]>([]);
+  const [blogCards, setBlogCards] = useState<IData[]>([]);
+  const [loader, setLoader] = useState<boolean>(true);
+  const [selectCategory, setSelectCategory] = useState<string[]>([]);
+  const [blogByCategory, setBlogByCategory] = useState<IData[]>([]);
 
   useEffect(() => {
     (async () => {
       setBlogCards(await useFetchBlogs());
+      setLoader(false);
     })();
   }, []);
+
+  useEffect(() => {
+    if (!selectCategory.length) {
+      setBlogByCategory(blogCards);
+      return;
+    }
+
+    for (let cat of selectCategory) {
+      setBlogByCategory(
+        blogCards?.filter(({ categories }) => categories.includes(cat))
+      );
+    }
+  }, [selectCategory, blogCards]);
 
   return (
     <BlogWrapper>
       <ArticlesWrapper>
-        <Filtering />
-        <Loader />
+        {loader && <Loader />}
+        <Filtering
+          setSelectCategory={setSelectCategory}
+          selectCategory={selectCategory}
+          category={category}
+        />
         <BlogsWrapper>
-          {blogcards?.map((blog, idx) => (
+          {blogByCategory?.map((blog, idx) => (
             <BlogCard key={idx} {...blog} />
           ))}
         </BlogsWrapper>

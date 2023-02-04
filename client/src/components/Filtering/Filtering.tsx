@@ -8,16 +8,17 @@ import {
   Categories,
 } from "./Filtering.style";
 
-const Filtering: FC = () => {
-  const [category, setCategory] = useState<string[]>([
-    "design",
-    "development",
-    "devops",
-    "UI/UX",
-    "marketing",
-  ]);
-  const [selectCategory, setSelectCategory] = useState<string[]>([]);
+interface IProps {
+  setSelectCategory: React.Dispatch<React.SetStateAction<string[]>>;
+  selectCategory: string[];
+  category: string[];
+}
 
+const Filtering: FC<IProps> = ({
+  setSelectCategory,
+  selectCategory,
+  category,
+}) => {
   const handleClick = (category: string) => {
     if (selectCategory.includes(category)) {
       setSelectCategory((prev) => prev?.filter((cat) => cat !== category));

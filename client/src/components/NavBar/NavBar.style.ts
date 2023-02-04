@@ -4,7 +4,7 @@ export const NavWrapper = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 40px;
+  padding: 20px 4%;
   font-family: "Roboto", sans-serif;
   border-bottom: 0.1px solid #a1a1a147;
 

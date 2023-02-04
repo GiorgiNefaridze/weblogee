@@ -81,7 +81,7 @@ export const Image = styled.label<IPros | HTMLElement>`
   align-items: center;
   justify-content: center;
   gap: 7px 0;
-  padding: 15% 0;
+  padding: 20% 0;
   border: ${({ selected }) =>
     selected ? "2px dashed green" : "2px dashed grey"};
   cursor: pointer;

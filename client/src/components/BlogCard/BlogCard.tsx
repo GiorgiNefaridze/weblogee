@@ -29,7 +29,9 @@ const BlogCard: FC<IData> = ({
       <BlogContent>
         <div>
           <h2>{title}</h2>
-          <p>{content}</p>
+          <p>
+            {content.length > 250 ? content.slice(0, 250) + "..." : content}
+          </p>
         </div>
         <img src={image ? image : NoImage} alt="banner" />
       </BlogContent>

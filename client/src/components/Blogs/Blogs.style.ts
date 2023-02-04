@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const BlogWrapper = styled.div`
   height: 100vh;
   display: flex;
-  padding: 0 40px;
+  padding: 0 4%;
 `;
 
 export const ArticlesWrapper = styled.div`
@@ -28,5 +28,5 @@ export const BlogsWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px 0;
+  gap: 30px 0;
 `;
