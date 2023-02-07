@@ -15,15 +15,15 @@ interface IProps {
 }
 
 const Filtering: FC<IProps> = ({
-  setSelectCategory,
-  selectCategory,
   category,
+  selectCategory,
+  setSelectCategory,
 }) => {
-  const handleClick = (category: string) => {
-    if (selectCategory.includes(category)) {
-      setSelectCategory((prev) => prev?.filter((cat) => cat !== category));
+  const handleClick = (cat: string) => {
+    if (selectCategory.includes(cat)) {
+      setSelectCategory(selectCategory?.filter((el) => el !== cat));
     } else {
-      setSelectCategory([...selectCategory, category]);
+      setSelectCategory([...selectCategory, cat]);
     }
   };
 
@@ -35,13 +35,13 @@ const Filtering: FC<IProps> = ({
       </Search>
       <CategoriesWrapper>
         <h2>Categories :</h2>
-        {category?.map((category, idx) => (
+        {category?.map((cat, idx) => (
           <Categories
             key={idx}
-            onClick={() => handleClick(category)}
-            select={selectCategory.includes(category)}
+            onClick={() => handleClick(cat)}
+            select={selectCategory.includes(cat)}
           >
-            <span title={category}>{category}</span>
+            <span title={cat}>{cat}</span>
           </Categories>
         ))}
       </CategoriesWrapper>

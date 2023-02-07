@@ -23,10 +23,12 @@ const category: string[] = [
 ];
 
 const Blogs: FC = () => {
-  const [blogCards, setBlogCards] = useState<IData[]>([]);
+  const [blogCards, setBlogCards] = useState<IData[]>([]); //all Blogs
+  const [blogByCategory, setBlogByCategory] = useState<IData[]>([]); //Blogs filter by category
+  const [noCategoryBlog, setNoCategoryBlog] = useState<boolean>(false); //Checker of no category
+  const [selectCategory, setSelectCategory] = useState<string[]>([]); //all selected categories
+
   const [loader, setLoader] = useState<boolean>(true);
-  const [selectCategory, setSelectCategory] = useState<string[]>([]);
-  const [blogByCategory, setBlogByCategory] = useState<IData[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -35,33 +37,54 @@ const Blogs: FC = () => {
     })();
   }, []);
 
+  const filteredData = (data: IData[], key: string[]) => {
+    return data.filter((item: IData) =>
+      key.every((category: any) => item.categories.includes(category))
+    );
+  };
+
   useEffect(() => {
-    if (!selectCategory.length) {
-      setBlogByCategory(blogCards);
-      return;
+    if (selectCategory.length > 0) {
+      setNoCategoryBlog(false);
+
+      const filtered = filteredData(blogCards, selectCategory);
+
+      setBlogByCategory(filtered);
     }
 
-    for (let cat of selectCategory) {
-      setBlogByCategory(
-        blogCards?.filter(({ categories }) => categories.includes(cat))
-      );
+    if (selectCategory.length < 1) {
+      setBlogByCategory(blogCards);
     }
   }, [selectCategory, blogCards]);
+
+  useEffect(() => {
+    if (selectCategory.length > 0 && blogByCategory.length < 1) {
+      setNoCategoryBlog(true);
+    }
+
+    if (selectCategory.length < 1 && blogByCategory.length < 1) {
+      setNoCategoryBlog(false);
+      setBlogByCategory(blogCards);
+    }
+  }, [selectCategory, blogByCategory]);
 
   return (
     <BlogWrapper>
       <ArticlesWrapper>
         {loader && <Loader />}
         <Filtering
-          setSelectCategory={setSelectCategory}
           selectCategory={selectCategory}
+          setSelectCategory={setSelectCategory}
           category={category}
         />
-        <BlogsWrapper>
-          {blogByCategory?.map((blog, idx) => (
-            <BlogCard key={idx} {...blog} />
-          ))}
-        </BlogsWrapper>
+        {noCategoryBlog === false && (
+          <BlogsWrapper>
+            {blogByCategory?.map((blog, idx) => (
+              <BlogCard key={idx} {...blog} />
+            ))}
+          </BlogsWrapper>
+        )}
+        {noCategoryBlog && <p>No Content</p>}
       </ArticlesWrapper>
       <DetailsWrapper></DetailsWrapper>
     </BlogWrapper>
