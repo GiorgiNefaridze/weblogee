@@ -30,3 +30,15 @@ export const BlogsWrapper = styled.div`
   flex-direction: column;
   gap: 30px 0;
 `;
+
+export const NoContent = styled.div`
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #8f8e8e;
+  font-family: "Roboto", sans-serif;
+  font-size: 2em;
+`;

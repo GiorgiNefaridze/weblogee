@@ -12,6 +12,7 @@ import {
   ArticlesWrapper,
   DetailsWrapper,
   BlogsWrapper,
+  NoContent,
 } from "./Blogs.style";
 
 const category: string[] = [
@@ -39,7 +40,7 @@ const Blogs: FC = () => {
 
   const filteredData = (data: IData[], key: string[]) => {
     return data.filter((item: IData) =>
-      key.every((category: any) => item.categories.includes(category))
+      key.every((category: string) => item.categories.includes(category))
     );
   };
 
@@ -77,14 +78,14 @@ const Blogs: FC = () => {
           setSelectCategory={setSelectCategory}
           category={category}
         />
-        {noCategoryBlog === false && (
+        {!noCategoryBlog && (
           <BlogsWrapper>
             {blogByCategory?.map((blog, idx) => (
               <BlogCard key={idx} {...blog} />
             ))}
           </BlogsWrapper>
         )}
-        {noCategoryBlog && <p>No Content</p>}
+        {noCategoryBlog && <NoContent>No Content Found</NoContent>}
       </ArticlesWrapper>
       <DetailsWrapper></DetailsWrapper>
     </BlogWrapper>
