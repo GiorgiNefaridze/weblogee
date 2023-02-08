@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 
 import BlogCard from "../BlogCard/BlogCard";
 import Loader from "../Loader/Loader";
@@ -23,26 +23,59 @@ const category: string[] = [
   "marketing",
 ];
 
+const filteredData = (data: IData[], key: string[]) => {
+  return data.filter((item: IData) =>
+    key.every((category: string) => item.categories.includes(category))
+  );
+};
+
 const Blogs: FC = () => {
   const [blogCards, setBlogCards] = useState<IData[]>([]); //all Blogs
   const [blogByCategory, setBlogByCategory] = useState<IData[]>([]); //Blogs filter by category
   const [noCategoryBlog, setNoCategoryBlog] = useState<boolean>(false); //Checker of no category
   const [selectCategory, setSelectCategory] = useState<string[]>([]); //all selected categories
+  const [content, setContent] = useState<number>(0); //indicate content to know when program should fetch data
+  const [noContent, setNoContent] = useState<string>("");
 
   const [loader, setLoader] = useState<boolean>(true);
 
+  const BlogContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const handelScroll = (container: HTMLDivElement) => {
+    if (
+      container.scrollHeight - container.offsetHeight ===
+      container.scrollTop
+    ) {
+      setContent((prev) => prev + 5);
+    } else {
+      setNoContent("");
+    }
+  };
+
   useEffect(() => {
     (async () => {
-      setBlogCards(await useFetchBlogs());
+      setLoader(true);
+      if (!noContent.length) {
+        const response = await useFetchBlogs(content);
+        if (typeof response == "object") {
+          setBlogCards([...blogCards, ...response]);
+        } else {
+          setNoContent(response);
+        }
+      }
       setLoader(false);
     })();
-  }, []);
+  }, [content]);
 
-  const filteredData = (data: IData[], key: string[]) => {
-    return data.filter((item: IData) =>
-      key.every((category: string) => item.categories.includes(category))
-    );
-  };
+  useEffect(() => {
+    const container = BlogContainerRef?.current;
+
+    container?.addEventListener("scroll", () => handelScroll(container));
+
+    return () => {
+      container?.removeEventListener("scroll", () => handelScroll(container));
+    };
+  }, []);
 
   useEffect(() => {
     if (selectCategory.length > 0) {
@@ -79,13 +112,19 @@ const Blogs: FC = () => {
           category={category}
         />
         {!noCategoryBlog && (
-          <BlogsWrapper>
-            {blogByCategory?.map((blog, idx) => (
-              <BlogCard key={idx} {...blog} />
-            ))}
+          <BlogsWrapper ref={BlogContainerRef}>
+            {typeof blogByCategory === "object" &&
+              blogByCategory?.map((blog, idx) => (
+                <BlogCard key={idx} {...blog} />
+              ))}
           </BlogsWrapper>
         )}
         {noCategoryBlog && <NoContent>No Content Found</NoContent>}
+        {noContent.length > 0 && (
+          <NoContent style={{ fontSize: "14px" }}>
+            {noContent + "..."}
+          </NoContent>
+        )}
       </ArticlesWrapper>
       <DetailsWrapper></DetailsWrapper>
     </BlogWrapper>

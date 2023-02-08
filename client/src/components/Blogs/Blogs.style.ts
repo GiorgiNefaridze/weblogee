@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 export const BlogWrapper = styled.div`
-  height: 100vh;
+  height: 89.5vh;
   display: flex;
   padding: 0 4%;
 `;
 
 export const ArticlesWrapper = styled.div`
   width: 65%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -21,14 +21,20 @@ export const ArticlesWrapper = styled.div`
 
 export const DetailsWrapper = styled.div`
   width: 25%;
-  height: 100vh;
+  height: 100%;
 `;
 
 export const BlogsWrapper = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 30px 0;
+  gap: 35px 0;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 `;
 
 export const NoContent = styled.div`

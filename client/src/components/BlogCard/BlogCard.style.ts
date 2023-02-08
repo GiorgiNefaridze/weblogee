@@ -8,8 +8,16 @@ export const CardWrapper = styled.div`
   gap: 15px 0;
   padding: 10px 0;
   box-sizing: border-box;
-  border-top: 1px solid #a1a1a147;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: #ebebeb47;
   font-family: "Roboto", sans-serif;
+
+  &:hover {
+    background-color: #e1e1e147;
+    transition: All 0.5s;
+    cursor: pointer;
+  }
 `;
 
 export const BlogHeader = styled.div`
