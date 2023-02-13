@@ -36,15 +36,3 @@ export const BlogsWrapper = styled.div`
     width: 0px;
   }
 `;
-
-export const NoContent = styled.div`
-  width: 100%;
-  height: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  color: #8f8e8e;
-  font-family: "Roboto", sans-serif;
-  font-size: 2em;
-`;

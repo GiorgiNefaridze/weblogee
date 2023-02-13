@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import React, { FC } from "react";
 import { FiSearch } from "react-icons/fi";
 
 import {
@@ -12,12 +12,14 @@ interface IProps {
   setSelectCategory: React.Dispatch<React.SetStateAction<string[]>>;
   selectCategory: string[];
   category: string[];
+  setFilterKey: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Filtering: FC<IProps> = ({
   category,
   selectCategory,
   setSelectCategory,
+  setFilterKey,
 }) => {
   const handleClick = (cat: string) => {
     if (selectCategory.includes(cat)) {
@@ -27,11 +29,21 @@ const Filtering: FC<IProps> = ({
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFilterKey(value);
+  };
+
   return (
     <FilteringWrapper>
       <Search htmlFor="search">
         <FiSearch style={{ fontSize: "20px" }} />
-        <input type="text" id="search" placeholder="Search..." />
+        <input
+          onChange={handleChange}
+          type="text"
+          id="search"
+          placeholder="Search..."
+        />
       </Search>
       <CategoriesWrapper>
         <h2>Categories :</h2>
