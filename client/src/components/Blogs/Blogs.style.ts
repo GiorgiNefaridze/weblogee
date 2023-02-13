@@ -36,3 +36,12 @@ export const BlogsWrapper = styled.div`
     width: 0px;
   }
 `;
+
+export const NoContentWrapper = styled.div`
+  color: grey;
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  margin: auto;
+`;

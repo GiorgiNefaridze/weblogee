@@ -12,6 +12,7 @@ import {
   ArticlesWrapper,
   DetailsWrapper,
   BlogsWrapper,
+  NoContentWrapper,
 } from "./Blogs.style";
 
 const category: string[] = [
@@ -26,6 +27,7 @@ const Blogs: FC = () => {
   const [blogByCategory, setBlogByCategory] = useState<IData[]>([]); //Blogs filter by category
   const [selectCategory, setSelectCategory] = useState<string[]>([]); //all selected categories
   const [filterKey, setFilterKey] = useState<string>("");
+  const [notFoundedBlogs, setNotFoundedBlogs] = useState<boolean>(false);
 
   const [loader, setLoader] = useState<boolean>(true);
 
@@ -44,6 +46,14 @@ const Blogs: FC = () => {
     })();
   }, [selectCategory.length, filterKey.length]);
 
+  useEffect(() => {
+    if (selectCategory.length && !blogByCategory.length) {
+      setNotFoundedBlogs(true);
+    } else {
+      setNotFoundedBlogs(false);
+    }
+  }, [selectCategory.length, blogByCategory]);
+
   return (
     <BlogWrapper>
       <ArticlesWrapper>
@@ -54,11 +64,16 @@ const Blogs: FC = () => {
           category={category}
           setFilterKey={setFilterKey}
         />
-        <BlogsWrapper ref={BlogContainerRef}>
-          {blogByCategory?.map((blog, idx) => (
-            <BlogCard key={idx} {...blog} />
-          ))}
-        </BlogsWrapper>
+        {blogByCategory.length && (
+          <BlogsWrapper ref={BlogContainerRef}>
+            {blogByCategory?.map((blog, idx) => (
+              <BlogCard key={idx} {...blog} />
+            ))}
+          </BlogsWrapper>
+        )}
+        {notFoundedBlogs && (
+          <NoContentWrapper>Blog not found!</NoContentWrapper>
+        )}
       </ArticlesWrapper>
       <DetailsWrapper></DetailsWrapper>
     </BlogWrapper>
