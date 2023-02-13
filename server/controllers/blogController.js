@@ -10,25 +10,48 @@ import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
 cloudinaryConfigurations();
 
 export const getAllBlogs = async (req, res) => {
-  const Blog = await Blogs.find({});
+  try {
+    const { categories, key } = req.query;
 
-  const fetchUser = async () => {
-    const blogDetails = [];
+    let Blog;
 
-    for (let blog of Blog) {
-      const user = await User.findOne({
-        _id: blog?.author.toString().split("(")[0],
-      }).lean();
+    const blogs = await Blogs.find({});
 
-      blogDetails.push({ ...user, ...blog });
+    if (categories === "null") {
+      Blog = blogs;
     }
 
-    return blogDetails;
-  };
+    if (categories.length > 0 && categories !== "null") {
+      Blog = blogs?.filter((blog) => {
+        return categories
+          .split(",")
+          .every((category) => blog.categories.includes(category));
+      });
+    }
 
-  const result = await fetchUser();
+    const fetchUser = async () => {
+      const blogDetails = [];
 
-  res.status(200).json(result);
+      for (let blog of Blog) {
+        const user = await User.findOne({
+          _id: blog?.author.toString().split("(")[0],
+        }).lean();
+
+        const { name, image: avatar } = user;
+        const { title, content, categories, image } = blog;
+
+        blogDetails.push({ name, avatar, title, content, categories, image });
+      }
+
+      return blogDetails;
+    };
+
+    const result = await fetchUser();
+
+    res.status(200).json({ response: result });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
 };
 
 export const createBlog = async (req, res) => {
