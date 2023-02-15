@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import debounce from "lodash/debounce";
 import { FiSearch } from "react-icons/fi";
 
 import {
@@ -29,10 +30,10 @@ const Filtering: FC<IProps> = ({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setFilterKey(value);
-  };
+  }, 400);
 
   return (
     <FilteringWrapper>

@@ -29,48 +29,49 @@ const Blogs: FC = () => {
   const [filterKey, setFilterKey] = useState<string>("");
   const [notFoundedBlogs, setNotFoundedBlogs] = useState<boolean>(false);
 
-  const [loader, setLoader] = useState<boolean>(true);
+  // const [loader, setLoader] = useState<boolean>(true);
 
   const BlogContainerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      setLoader(true);
-      setBlogByCategory(
-        await useFetchBlogs(
-          selectCategory.length ? selectCategory : null,
-          filterKey.length ? filterKey : null
-        )
-      );
-      setLoader(false);
-    })();
-  }, [selectCategory.length, filterKey.length]);
+  // useEffect(() => {
+  //   (async () => {
+  //     setLoader(true);
+  //     setBlogByCategory(
+  //       await useFetchBlogs(
+  //         selectCategory.length ? selectCategory : null,
+  //         filterKey?.length ? filterKey : null
+  //       )
+  //     );
+  //     setLoader(false);
+  //   })();
+  // }, [selectCategory.length, filterKey?.length]);
+  console.log(filterKey);
 
-  useEffect(() => {
-    if (selectCategory.length && !blogByCategory.length) {
-      setNotFoundedBlogs(true);
-    } else {
-      setNotFoundedBlogs(false);
-    }
-  }, [selectCategory.length, blogByCategory]);
+  // useEffect(() => {
+  //   if (selectCategory.length && !blogByCategory.length) {
+  //     setNotFoundedBlogs(true);
+  //   } else {
+  //     setNotFoundedBlogs(false);
+  //   }
+  // }, [selectCategory?.length, blogByCategory?.length]);
 
   return (
     <BlogWrapper>
       <ArticlesWrapper>
-        {loader && <Loader />}
+        {/* {loader && <Loader />} */}
         <Filtering
           selectCategory={selectCategory}
           setSelectCategory={setSelectCategory}
           category={category}
           setFilterKey={setFilterKey}
         />
-        {blogByCategory.length && (
+        {blogByCategory?.length ? (
           <BlogsWrapper ref={BlogContainerRef}>
             {blogByCategory?.map((blog, idx) => (
               <BlogCard key={idx} {...blog} />
             ))}
           </BlogsWrapper>
-        )}
+        ) : null}
         {notFoundedBlogs && (
           <NoContentWrapper>Blog not found!</NoContentWrapper>
         )}
