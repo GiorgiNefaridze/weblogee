@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const BlogWrapper = styled.div`
-  height: 89.5vh;
+  height: 89.3vh;
   display: flex;
   padding: 0 4%;
 `;

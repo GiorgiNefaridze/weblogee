@@ -2,7 +2,7 @@ import { FC, useState, useEffect, useRef } from "react";
 
 import BlogCard from "../BlogCard/BlogCard";
 import Loader from "../Loader/Loader";
-import { useFetchBlogs } from "../../hooks/useFetchBlogs";
+import useFetchBlogs from "../../hooks/useFetchBlogs";
 import { IData } from "../../hooks/useFetchBlogs";
 
 import Filtering from "../Filtering/Filtering";
@@ -28,37 +28,65 @@ const Blogs: FC = () => {
   const [selectCategory, setSelectCategory] = useState<string[]>([]); //all selected categories
   const [filterKey, setFilterKey] = useState<string>("");
   const [notFoundedBlogs, setNotFoundedBlogs] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
 
-  // const [loader, setLoader] = useState<boolean>(true);
+  const [loader, setLoader] = useState<boolean>(true);
 
   const BlogContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     setLoader(true);
-  //     setBlogByCategory(
-  //       await useFetchBlogs(
-  //         selectCategory.length ? selectCategory : null,
-  //         filterKey?.length ? filterKey : null
-  //       )
-  //     );
-  //     setLoader(false);
-  //   })();
-  // }, [selectCategory.length, filterKey?.length]);
-  console.log(filterKey);
+  const { fetchBlogs, blogs } = useFetchBlogs();
 
-  // useEffect(() => {
-  //   if (selectCategory.length && !blogByCategory.length) {
-  //     setNotFoundedBlogs(true);
-  //   } else {
-  //     setNotFoundedBlogs(false);
-  //   }
-  // }, [selectCategory?.length, blogByCategory?.length]);
+  const infiniteScroll = (e: any) => {
+    if (
+      e?.target.scrollTop + e?.target.offsetHeight >
+      e?.target.scrollHeight - 1
+    ) {
+      setPage(page + 5);
+    }
+  };
+
+  useEffect(() => {
+    BlogContainerRef?.current?.addEventListener("scroll", infiniteScroll);
+
+    return () => {
+      BlogContainerRef.current?.removeEventListener("scroll", infiniteScroll);
+    };
+  });
+
+  useEffect(() => {
+    (async () => {
+      setLoader(true);
+      const data = await useFetchBlogs(
+        page,
+        selectCategory?.length > 0 ? selectCategory : null,
+        filterKey?.length > 0 ? filterKey : null
+      );
+
+      if (typeof data === "object") {
+        setBlogByCategory((prev) => [...prev, ...data]);
+      } else {
+        setNotFoundedBlogs(true);
+      }
+
+      setLoader(false);
+    })();
+  }, [selectCategory.length, filterKey?.length, page]);
+
+  useEffect(() => {
+    if (
+      (filterKey?.length || selectCategory?.length) &&
+      blogByCategory?.length < 1
+    ) {
+      setNotFoundedBlogs(true);
+    } else {
+      setNotFoundedBlogs(false);
+    }
+  }, [selectCategory?.length, blogByCategory?.length, filterKey?.length]);
 
   return (
     <BlogWrapper>
       <ArticlesWrapper>
-        {/* {loader && <Loader />} */}
+        {loader && <Loader />}
         <Filtering
           selectCategory={selectCategory}
           setSelectCategory={setSelectCategory}
