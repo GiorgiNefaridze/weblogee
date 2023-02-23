@@ -6,51 +6,31 @@ import User from "../models/User.js";
 import { veryfyToken } from "../utils/verifyJWT.js";
 import { getValidToken } from "../utils/getValidToken.js";
 import { cloudinaryConfigurations } from "../cloudinaryConfig.js";
+import { fetchUser } from "../utils/fetchUser.js";
 
 cloudinaryConfigurations();
 
 export const getAllBlogs = async (req, res) => {
   try {
-    const { categories, key } = req.query;
+    const { page, categories, key } = req.query;
 
-    let Blog;
+    // console.log("page, categories, key", page, categories, key);
 
-    const blogs = await Blogs.find({});
+    let blogs;
 
-    if (categories === "null") {
-      Blog = blogs;
+    // if (!page && !categories?.length && !key?.length) {
+    //   blogs = await Blogs.find({}).limit(5);
+    // }
+
+    if (page < 1 && categories?.length < 1 && key?.length < 1) {
+      blogs = await Blogs.find({}).limit(5);
     }
 
-    if (categories.length > 0 && categories !== "null") {
-      Blog = blogs?.filter((blog) => {
-        return categories
-          .split(",")
-          .every((category) => blog.categories.includes(category));
-      });
-    }
+    const data = await fetchUser(blogs);
 
-    const fetchUser = async () => {
-      const blogDetails = [];
-
-      for (let blog of Blog) {
-        const user = await User.findOne({
-          _id: blog?.author.toString().split("(")[0],
-        }).lean();
-
-        const { name, image: avatar } = user;
-        const { title, content, categories, image } = blog;
-
-        blogDetails.push({ name, avatar, title, content, categories, image });
-      }
-
-      return blogDetails;
-    };
-
-    const result = await fetchUser();
-
-    res.status(200).json({ response: result });
+    res.status(200).json({ response: data });
   } catch (error) {
-    res.json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -59,7 +39,7 @@ export const createBlog = async (req, res) => {
     const { title, content, image, categories } = req.body;
     const headers = req.headers;
 
-    if (title?.trim().length <= 0 && content?.trim().length <= 0) {
+    if (title?.trim()?.length <= 0 && content?.trim()?.length <= 0) {
       throw new Error("All fields are required");
     }
 
