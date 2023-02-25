@@ -1,12 +1,11 @@
 import { useState } from "react";
-
 import { isAxiosError } from "axios";
+
+import { BlogContext } from "../context/blogContext";
 import { axiosInstance } from "../api/axiosInstance";
 
 interface IProps {
-  (page: number, categories: string[] | null, key: string | null): Promise<
-    IData[] | string
-  >;
+  (page: number, categories: string[], key: string): Promise<IData[] | string>;
 }
 export interface IData {
   name: string;
@@ -18,9 +17,13 @@ export interface IData {
 }
 
 const useFetchBlogs = () => {
-  const [blogs, setBlogs] = useState([]);
+  const [loader, setLoader] = useState<boolean>(false);
+
+  const { setBlogs, blogs } = BlogContext();
 
   const fetchBlogs: IProps = async (page, categories, key) => {
+    setLoader(true);
+
     try {
       const {
         data: { response },
@@ -28,13 +31,15 @@ const useFetchBlogs = () => {
         `/api/blogs/getBlogs?page=${page}&categories=${categories}&key=${key}`
       );
 
-      setBlogs(response);
+      setBlogs([...blogs, ...response]);
+      setLoader(false);
     } catch (error) {
+      setLoader(false);
       return isAxiosError(error) ? error?.response?.data.error : "";
     }
   };
 
-  return { fetchBlogs, blogs };
+  return { fetchBlogs, loader };
 };
 
 export default useFetchBlogs;

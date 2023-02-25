@@ -12,21 +12,27 @@ import {
 interface IProps {
   setSelectCategory: React.Dispatch<React.SetStateAction<string[]>>;
   selectCategory: string[];
-  category: string[];
   setFilterKey: React.Dispatch<React.SetStateAction<string>>;
 }
 
+const category: string[] = [
+  "design",
+  "development",
+  "devops",
+  "UI/UX",
+  "marketing",
+];
+
 const Filtering: FC<IProps> = ({
-  category,
   selectCategory,
   setSelectCategory,
   setFilterKey,
 }) => {
   const handleClick = (cat: string) => {
     if (selectCategory.includes(cat)) {
-      setSelectCategory(selectCategory?.filter((el) => el !== cat));
+      setSelectCategory((prev) => prev?.filter((el) => el !== cat));
     } else {
-      setSelectCategory([...selectCategory, cat]);
+      setSelectCategory((prev) => [...prev, cat]);
     }
   };
 
