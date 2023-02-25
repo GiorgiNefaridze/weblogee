@@ -6,6 +6,7 @@ const blogSchema = new Schema({
   content: { type: String, required: true },
   categories: { type: [String], required: true },
   image: { type: String },
+  date: { type: Date, default: Date.now, required: true },
 });
 
 export default model("blogs", blogSchema);

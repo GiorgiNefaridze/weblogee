@@ -12,21 +12,21 @@ cloudinaryConfigurations();
 
 export const getAllBlogs = async (req, res) => {
   try {
-    const { page, categories, key } = req.query;
-
-    // console.log("page, categories, key", page, categories, key);
+    const { page } = req.query;
 
     let blogs;
 
-    // if (!page && !categories?.length && !key?.length) {
-    //   blogs = await Blogs.find({}).limit(5);
-    // }
-
-    if (page < 1 && categories?.length < 1 && key?.length < 1) {
-      blogs = await Blogs.find({}).limit(5);
+    if (page > 0) {
+      blogs = await Blogs.find({}).skip(page).limit(5);
+    } else {
+      blogs = await Blogs.find({}).skip(0).limit(5);
     }
 
     const data = await fetchUser(blogs);
+
+    if (data == "undefind" || data?.length < 1) {
+      throw new Error("Blog not found.Try with different keywords");
+    }
 
     res.status(200).json({ response: data });
   } catch (error) {
