@@ -17,7 +17,6 @@ import {
 } from "./Blogs.style";
 
 const Blogs: FC = () => {
-  const [selectCategory, setSelectCategory] = useState<string[]>([]);
   const [notFoundedBlogs, setNotFoundedBlogs] = useState<boolean>(false);
   const [filterKey, setFilterKey] = useState<string>("");
 
@@ -25,44 +24,15 @@ const Blogs: FC = () => {
 
   const { fetchBlogs, loader } = useFetchBlogs();
   const { infiniteScroll, page } = useInfiniteScroll();
-  const { blogs, setBlogs } = BlogContext();
+  const { blogs } = BlogContext();
 
   infiniteScroll(BlogContainerRef?.current);
 
-  const fetchData = async (
-    page: number,
-    selectCategory: string[],
-    filterKey: string
-  ) => {
-    await fetchBlogs(page, selectCategory, filterKey);
-  };
-
-  console.log(blogs);
-
-  // useEffect(() => {
-  //   if (selectCategory.length < 1) {
-  //     console.log("Fe");
-  //     setBlogs(blogs);
-  //   }
-  // }, [selectCategory?.length]);
-
   useEffect(() => {
-    if (page > 0) {
-      fetchData(page, selectCategory, filterKey);
-    }
+    (async () => {
+      fetchBlogs(page);
+    })();
   }, [page]);
-
-  useEffect(() => {
-    if (selectCategory?.length > 0 && blogs?.length > 0) {
-      setBlogs((prev) =>
-        prev?.filter(({ categories }) => {
-          return selectCategory.every((category) =>
-            categories.includes(category)
-          );
-        })
-      );
-    }
-  }, [blogs.length, selectCategory.length]);
 
   useEffect(() => {
     BlogContainerRef?.current?.addEventListener("scroll", infiniteScroll);
@@ -76,11 +46,7 @@ const Blogs: FC = () => {
     <BlogWrapper>
       <ArticlesWrapper>
         {loader && <Loader />}
-        <Filtering
-          selectCategory={selectCategory}
-          setSelectCategory={setSelectCategory}
-          setFilterKey={setFilterKey}
-        />
+        <Filtering setFilterKey={setFilterKey} />
         <BlogsWrapper ref={BlogContainerRef}>
           {blogs?.map((blog: IData, idx) => (
             <BlogCard key={idx} {...blog} />

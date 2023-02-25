@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { FaUserCircle } from "react-icons/fa";
+import { VscBookmark } from "react-icons/vsc";
 
 import NoImage from "../../../public/no_image.jpg";
 import { IData } from "../../hooks/useFetchBlogs";
@@ -18,17 +19,30 @@ const BlogCard: FC<IData> = ({
   content,
   image,
   name,
+  date,
 }) => {
+  const bdate = new Date(date);
+  const blogdate = bdate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <CardWrapper>
       <BlogHeader>
-        {avatar && <img src={avatar} alt="avatar" title={name} />}
-        {!avatar && <FaUserCircle size={35} />}
-        <h3>{name}</h3>
+        <div>
+          {avatar && <img src={avatar} alt="avatar" title={name} />}
+          {!avatar && <FaUserCircle size={35} />}
+          <h3>{name}</h3>
+          <p>●</p>
+          {blogdate && <p>{blogdate.toString()}</p>}
+        </div>
+        <VscBookmark size={20} title="Bookmarks" color="grey" />
       </BlogHeader>
       <BlogContent>
         <div>
-          <h2>{title}</h2>
+          <h2>{title.length > 50 ? title.slice(0, 50) + "..." : title}</h2>
           <p>
             {content?.length > 250 ? content?.slice(0, 250) + "..." : content}
           </p>

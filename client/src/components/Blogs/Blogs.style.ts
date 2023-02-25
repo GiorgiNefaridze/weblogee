@@ -7,12 +7,11 @@ export const BlogWrapper = styled.div`
 `;
 
 export const ArticlesWrapper = styled.div`
-  width: 65%;
+  width: 55%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px 0;
   padding-right: 3%;
   border-right: 0.1px solid #a1a1a147;
   box-sizing: border-box;
@@ -20,13 +19,13 @@ export const ArticlesWrapper = styled.div`
 `;
 
 export const DetailsWrapper = styled.div`
-  width: 25%;
+  width: 45%;
   height: 100%;
 `;
 
 export const BlogsWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 87%;
   display: flex;
   flex-direction: column;
   gap: 35px 0;

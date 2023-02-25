@@ -5,7 +5,7 @@ import { BlogContext } from "../context/blogContext";
 import { axiosInstance } from "../api/axiosInstance";
 
 interface IProps {
-  (page: number, categories: string[], key: string): Promise<IData[] | string>;
+  (page: number): Promise<IData[] | string>;
 }
 export interface IData {
   name: string;
@@ -14,6 +14,7 @@ export interface IData {
   content: string;
   categories: string[];
   image: string;
+  date: Date;
 }
 
 const useFetchBlogs = () => {
@@ -21,17 +22,21 @@ const useFetchBlogs = () => {
 
   const { setBlogs, blogs } = BlogContext();
 
-  const fetchBlogs: IProps = async (page, categories, key) => {
+  const fetchBlogs: IProps = async (page) => {
     setLoader(true);
 
     try {
       const {
         data: { response },
-      } = await axiosInstance().get(
-        `/api/blogs/getBlogs?page=${page}&categories=${categories}&key=${key}`
-      );
+      } = await axiosInstance().get(`/api/blogs/getBlogs?page=${page}`);
 
-      setBlogs([...blogs, ...response]);
+      if (page > 0) {
+        setBlogs([...blogs, ...response]);
+        setLoader(false);
+        return;
+      }
+
+      setBlogs([...response]);
       setLoader(false);
     } catch (error) {
       setLoader(false);

@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { MdCloudUpload } from "react-icons/md";
 
+import { axiosInstance } from "../../api/axiosInstance";
+
 import {
   Create,
   Content,
@@ -13,10 +15,9 @@ import {
   Image,
   BlogContent,
   Footer,
+  CategoriesWrapper,
+  Categories,
 } from "./CreateBlog.style";
-
-import { axiosInstance } from "../../api/axiosInstance";
-import { Categories, CategoriesWrapper } from "../Filtering/Filtering.style";
 
 const CreateBlog: FC = () => {
   const [image, setImage] = useState<ArrayBuffer | string>("");

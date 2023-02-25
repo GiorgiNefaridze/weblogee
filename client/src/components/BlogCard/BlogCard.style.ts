@@ -23,21 +23,34 @@ export const CardWrapper = styled.div`
 export const BlogHeader = styled.div`
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: 0 15px;
+  box-sizing: border-box;
 
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
+  div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0px 10px;
 
-  h3 {
-    font-weight: bold;
-    &::first-letter {
-      text-transform: uppercase;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    h3 {
+      font-weight: bold;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    p {
+      font-weight: 500;
+      font-size: 12px;
+      color: grey;
     }
   }
 `;

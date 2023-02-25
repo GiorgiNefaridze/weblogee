@@ -114,3 +114,25 @@ export const Footer = styled.footer`
     }
   }
 `;
+
+export const CategoriesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: rgb(165, 165, 165);
+  font-family: "Roboto", sans-serif;
+  gap: 0 10px;
+  cursor: pointer;
+`;
+
+export const Categories = styled.div<IPros | HTMLElement>`
+  color: ${({ select }) => (select ? "white" : "#383838")};
+  background-color: ${({ select }) => (select ? "#727272" : "#c7c7c7")};
+  font-family: "Roboto", sans-serif;
+  border-radius: 20px;
+  padding: 10px 15px;
+  font-size: 13px;
+  cursor: pointer;
+  &::first-letter {
+    text-transform: uppercase;
+  }
+`;
