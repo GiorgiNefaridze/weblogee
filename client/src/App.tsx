@@ -6,6 +6,7 @@ import CreateBlog from "./components/CreateBlog/CreateBlog";
 import NavBar from "./components/NavBar/NavBar";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
+import BlogContent from "./components/BlogContent/BlogContent";
 
 import { UserContext } from "./context/userContext";
 
@@ -26,6 +27,7 @@ const App: FC = () => {
           path="/create"
           element={user.auth ? <CreateBlog /> : <Blogs />}
         />
+        <Route path="/blog" element={<BlogContent />} />
       </Routes>
     </>
   );

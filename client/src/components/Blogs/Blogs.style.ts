@@ -7,7 +7,7 @@ export const BlogWrapper = styled.div`
 `;
 
 export const ArticlesWrapper = styled.div`
-  width: 55%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -19,8 +19,15 @@ export const ArticlesWrapper = styled.div`
 `;
 
 export const DetailsWrapper = styled.div`
-  width: 45%;
-  height: 100%;
+  width: 40%;
+  height: 10 0%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1% 3.5%;
+  box-sizing: border-box;
+  gap: 40px 0;
 `;
 
 export const BlogsWrapper = styled.div`
@@ -44,3 +51,72 @@ export const NoContentWrapper = styled.div`
   text-transform: uppercase;
   margin: auto;
 `;
+
+export const BannerWrapper = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background-color: #ededed;
+  border-radius: 15px;
+
+  div {
+    width: 60%;
+    line-height: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    h1 {
+      font-weight: bold;
+      font-size: 2rem;
+    }
+
+    p {
+      color: grey;
+      opacity: 0.8;
+      font-size: 13px;
+    }
+
+    button {
+      width: 100%;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      background-color: #505050;
+      outline: none;
+      padding: 12px 15px;
+      font-family: "Roboto", sans-serif;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: black;
+      }
+    }
+  }
+
+  img {
+    width: 10rem;
+    height: 10rem;
+  }
+`;
+
+export const BookmarkedBlogs = styled.div`
+  width: 80%;
+  background-color: red;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+`;
+
+export const SeenedBlogs = styled.div``;

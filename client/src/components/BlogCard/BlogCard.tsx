@@ -28,8 +28,10 @@ const BlogCard: FC<IData> = ({
     year: "numeric",
   });
 
+  const handleClick = () => {};
+
   return (
-    <CardWrapper>
+    <CardWrapper onClick={handleClick}>
       <BlogHeader>
         <div>
           {avatar && <img src={avatar} alt="avatar" title={name} />}
