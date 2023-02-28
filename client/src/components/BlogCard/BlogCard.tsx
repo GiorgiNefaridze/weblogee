@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { VscBookmark } from "react-icons/vsc";
 
@@ -12,15 +13,11 @@ import {
   CardWrapper,
 } from "./BlogCard.style";
 
-const BlogCard: FC<IData> = ({
-  title,
-  avatar,
-  categories,
-  content,
-  image,
-  name,
-  date,
-}) => {
+const BlogCard: FC<IData> = (props) => {
+  const { title, avatar, categories, content, image, name, date } = props;
+
+  const navigate = useNavigate();
+
   const bdate = new Date(date);
   const blogdate = bdate.toLocaleDateString("en-US", {
     month: "short",
@@ -28,7 +25,9 @@ const BlogCard: FC<IData> = ({
     year: "numeric",
   });
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    navigate(`/blog/${title}`, { state: { ...props, date: blogdate } });
+  };
 
   return (
     <CardWrapper onClick={handleClick}>
@@ -46,7 +45,7 @@ const BlogCard: FC<IData> = ({
         <div>
           <h2>{title.length > 50 ? title.slice(0, 50) + "..." : title}</h2>
           <p>
-            {content?.length > 250 ? content?.slice(0, 250) + "..." : content}
+            {content?.length > 50 ? content?.slice(0, 50) + "..." : content}
           </p>
         </div>
         <img src={image ? image : NoImage} alt="banner" />

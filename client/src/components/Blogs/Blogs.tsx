@@ -18,7 +18,7 @@ import {
   NoContentWrapper,
   BannerWrapper,
   BookmarkedBlogs,
-  SeenedBlogs,
+  Bookmarked,
 } from "./Blogs.style";
 
 const Blogs: FC = () => {
@@ -49,7 +49,7 @@ const Blogs: FC = () => {
     };
   });
   const handelClick = () => {
-    navigate("/register");
+    navigate("/create");
   };
 
   return (
@@ -62,22 +62,22 @@ const Blogs: FC = () => {
             <BlogCard key={idx} {...blog} />
           ))}
         </BlogsWrapper>
-        {notFoundedBlogs && (
+        {/* {notFoundedBlogs && (
           <NoContentWrapper>Blog not found!</NoContentWrapper>
-        )}
+        )} */}
       </ArticlesWrapper>
       <DetailsWrapper>
         <BannerWrapper>
           <div>
             <h1>Read And Share Your Daily Article</h1>
             <p>Get unlimited access</p>
-            <button onClick={handelClick}>Sign Up</button>
+            <button onClick={handelClick}>Create Article</button>
           </div>
           <img src={Notes} />
         </BannerWrapper>
         <BookmarkedBlogs>
-          <h1>Blogs You Have Seen</h1>
-          <SeenedBlogs></SeenedBlogs>
+          <h1>Blogs You Have Bookmarked</h1>
+          <Bookmarked></Bookmarked>
         </BookmarkedBlogs>
       </DetailsWrapper>
     </BlogWrapper>

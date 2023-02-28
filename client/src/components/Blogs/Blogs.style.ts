@@ -119,4 +119,4 @@ export const BookmarkedBlogs = styled.div`
   }
 `;
 
-export const SeenedBlogs = styled.div``;
+export const Bookmarked = styled.div``;

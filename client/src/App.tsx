@@ -27,7 +27,7 @@ const App: FC = () => {
           path="/create"
           element={user.auth ? <CreateBlog /> : <Blogs />}
         />
-        <Route path="/blog" element={<BlogContent />} />
+        <Route path="/blog/:title" element={<BlogContent />} />
       </Routes>
     </>
   );
