@@ -1,8 +1,11 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { BsBookmarkFill } from "react-icons/bs";
 import { VscBookmark } from "react-icons/vsc";
 import { FaUserCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+
+import { setBookmarked } from "../../hooks/useSetBookmarked";
 
 import NoImage from "../../../public/no_image.jpg";
 import {
@@ -12,6 +15,8 @@ import {
 } from "./BlogContent.style";
 
 const BlogContent: FC = () => {
+  const [fill, setFill] = useState<boolean>(false);
+
   const { state } = useLocation();
 
   const navigate = useNavigate();
@@ -19,6 +24,20 @@ const BlogContent: FC = () => {
   const handleClick = () => {
     navigate("/");
   };
+
+  const addInBookmarked = async () => {
+    const status = await setBookmarked(state?._id);
+
+    if (status === 200) {
+      setFill(true);
+    } else {
+      setFill(false);
+    }
+  };
+
+  useEffect(() => {
+    addInBookmarked();
+  }, [fill]);
 
   return (
     <BlogContentWrapper>
@@ -34,7 +53,10 @@ const BlogContent: FC = () => {
           <p>●</p>
           <p>{state?.date}</p>
         </div>
-        <VscBookmark cursor="pointer" size={20} />
+        {!fill && (
+          <VscBookmark onClick={addInBookmarked} cursor="pointer" size={20} />
+        )}
+        {fill && <BsBookmarkFill cursor="pointer" size={20} />}
       </HeaderWrapper>
       <ContentWrapper>
         {state?.image ? <img src={state?.image} /> : <img src={NoImage} />}

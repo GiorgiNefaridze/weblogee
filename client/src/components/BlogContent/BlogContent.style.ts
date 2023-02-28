@@ -13,22 +13,22 @@ export const BlogContentWrapper = styled.div`
   background-color: #e1e1e16e;
 
   button {
-      width: 100%;
-      color: white;
-      font-weight: 500;
-      border: none;
-      border-radius: 4px;
-      background-color: #505050c2;
-      outline: none;
-      padding: 12px 15px;
-      font-family: "Roboto", sans-serif;
-      letter-spacing: 1px;
-      cursor: pointer;
+    width: 20%;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    background-color: #505050c2;
+    outline: none;
+    padding: 12px 15px;
+    font-family: "Roboto", sans-serif;
+    letter-spacing: 1px;
+    cursor: pointer;
 
-      &:hover {
-        background-color: #040404c2;
-      }
+    &:hover {
+      background-color: #040404c2;
     }
+  }
 `;
 
 export const HeaderWrapper = styled.header`
@@ -73,7 +73,7 @@ export const ContentWrapper = styled.header`
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px 0;
+  gap: 50px 0;
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
 
