@@ -9,9 +9,18 @@ export const fetchUser = async (array) => {
     }).lean();
 
     const { name, image: avatar } = user;
-    const { title, content, categories, image } = blog;
+    const { title, content, categories, image, date, _id } = blog;
 
-    blogDetails.push({ name, avatar, title, content, categories, image });
+    blogDetails.push({
+      name,
+      avatar,
+      title,
+      content,
+      categories,
+      image,
+      date,
+      _id,
+    });
   }
 
   return blogDetails;

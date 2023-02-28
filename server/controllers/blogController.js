@@ -82,3 +82,30 @@ export const createBlog = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const setBookmark = async (req, res) => {
+  try {
+    const { blog_id } = req.body;
+    const header = req.headers;
+
+    const token = getValidToken(header);
+    const verifyToken = veryfyToken(token);
+
+    if (verifyToken?.id?.length > 0) {
+      const user = await User.findOne({ _id: verifyToken.id });
+
+      if (user.bookmarkedBlogs.includes(blog_id)) {
+        res.status(201).json({ status: 200 });
+        return;
+      }
+
+      if (user && !user.bookmarkedBlogs.includes(blog_id)) {
+        await User.findByIdAndUpdate(user?._id, {
+          bookmarkedBlogs: [...user.bookmarkedBlogs, blog_id],
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
