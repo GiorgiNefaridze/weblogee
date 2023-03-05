@@ -45,7 +45,7 @@ export const BlogsWrapper = styled.div`
 
 export const NoContentWrapper = styled.div`
   color: grey;
-  font-size: 3rem;
+  font-size: 1rem;
   font-weight: bold;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;

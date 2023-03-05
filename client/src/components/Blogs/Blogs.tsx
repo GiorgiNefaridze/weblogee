@@ -22,6 +22,7 @@ import {
 } from "./Blogs.style";
 
 const Blogs: FC = () => {
+  const [res, setRes] = useState("");
   const [notFoundedBlogs, setNotFoundedBlogs] = useState<boolean>(false);
   const [filterKey, setFilterKey] = useState<string>("");
 
@@ -30,24 +31,37 @@ const Blogs: FC = () => {
   const navigate = useNavigate();
 
   const { fetchBlogs, loader } = useFetchBlogs();
-  const { infiniteScroll, page } = useInfiniteScroll();
+  const { infiniteScroll, page, scrollRef } = useInfiniteScroll();
   const { blogs } = BlogContext();
 
   infiniteScroll(BlogContainerRef?.current);
 
   useEffect(() => {
     (async () => {
-      fetchBlogs(page);
+      const response = await fetchBlogs(page);
+
+      if (response?.length > 0) {
+        setRes(response);
+      }
     })();
   }, [page]);
 
   useEffect(() => {
     BlogContainerRef?.current?.addEventListener("scroll", infiniteScroll);
 
+    BlogContainerRef?.current?.addEventListener("scroll", () => {
+      if (res?.length > 0 && scrollRef.current) {
+        setNotFoundedBlogs(true);
+      } else {
+        setNotFoundedBlogs(false);
+      }
+    });
+
     return () => {
       BlogContainerRef?.current?.removeEventListener("scroll", infiniteScroll);
     };
   });
+
   const handelClick = () => {
     navigate("/create");
   };
@@ -62,9 +76,9 @@ const Blogs: FC = () => {
             <BlogCard key={idx} {...blog} />
           ))}
         </BlogsWrapper>
-        {/* {notFoundedBlogs && (
-          <NoContentWrapper>Blog not found!</NoContentWrapper>
-        )} */}
+        {notFoundedBlogs && res?.length && (
+          <NoContentWrapper>{res}</NoContentWrapper>
+        )}
       </ArticlesWrapper>
       <DetailsWrapper>
         <BannerWrapper>

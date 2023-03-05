@@ -5,7 +5,7 @@ import { VscBookmark } from "react-icons/vsc";
 import { FaUserCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
-import { setBookmarked } from "../../hooks/useSetBookmarked";
+import { checkBookmarkedBlogs } from "../../utils/checkBookmarkedBlogs";
 
 import NoImage from "../../../public/no_image.jpg";
 import {
@@ -14,10 +14,13 @@ import {
   ContentWrapper,
 } from "./BlogContent.style";
 
-const BlogContent: FC = () => {
-  const [fill, setFill] = useState<boolean>(false);
+import { axiosInstance } from "../../api/axiosInstance";
 
+const BlogContent: FC = () => {
   const { state } = useLocation();
+  const { fill, checkedInBookmarked, setFill } = checkBookmarkedBlogs(
+    state?._id
+  );
 
   const navigate = useNavigate();
 
@@ -25,19 +28,23 @@ const BlogContent: FC = () => {
     navigate("/");
   };
 
-  const addInBookmarked = async () => {
-    const status = await setBookmarked(state?._id);
+  const setBlogInBookmarked = async () => {
+    const {
+      data: { status },
+    } = await axiosInstance().post("/api/blogs/setBookmarks", {
+      blog_id: state?._id,
+    });
 
     if (status === 200) {
-      setFill(true);
-    } else {
       setFill(false);
+    } else {
+      setFill(true);
     }
   };
 
   useEffect(() => {
-    addInBookmarked();
-  }, [fill]);
+    checkedInBookmarked();
+  }, []);
 
   return (
     <BlogContentWrapper>
@@ -54,9 +61,19 @@ const BlogContent: FC = () => {
           <p>{state?.date}</p>
         </div>
         {!fill && (
-          <VscBookmark onClick={addInBookmarked} cursor="pointer" size={20} />
+          <VscBookmark
+            onClick={setBlogInBookmarked}
+            cursor="pointer"
+            size={20}
+          />
         )}
-        {fill && <BsBookmarkFill cursor="pointer" size={20} />}
+        {fill && (
+          <BsBookmarkFill
+            onClick={setBlogInBookmarked}
+            cursor="pointer"
+            size={20}
+          />
+        )}
       </HeaderWrapper>
       <ContentWrapper>
         {state?.image ? <img src={state?.image} /> : <img src={NoImage} />}
