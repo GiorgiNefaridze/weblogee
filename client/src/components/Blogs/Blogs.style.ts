@@ -48,6 +48,7 @@ export const NoContentWrapper = styled.div`
   font-size: 1rem;
   font-weight: bold;
   font-family: "Roboto", sans-serif;
+  padding: 1.2rem;
   text-transform: uppercase;
   margin: auto;
 `;
@@ -112,6 +113,7 @@ export const BookmarkedBlogs = styled.div`
   font-family: "Roboto", sans-serif;
   display: flex;
   flex-direction: column;
+  gap: 15px 0;
 
   h1 {
     font-weight: bold;

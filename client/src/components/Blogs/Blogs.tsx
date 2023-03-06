@@ -6,10 +6,13 @@ import Loader from "../Loader/Loader";
 import useFetchBlogs from "../../hooks/useFetchBlogs";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import Filtering from "../Filtering/Filtering";
-import { IData } from "../../hooks/useFetchBlogs";
 import { BlogContext } from "../../context/blogContext";
+import { getBookmarks } from "../../hooks/useGetBookmarks";
+import { IData } from "../../hooks/useFetchBlogs";
 
 import Notes from "../../../public/notes.jpg";
+import NoImage from "../../../public/no_image.jpg";
+
 import {
   BlogWrapper,
   ArticlesWrapper,
@@ -23,6 +26,7 @@ import {
 
 const Blogs: FC = () => {
   const [res, setRes] = useState("");
+  const [bookmakrs, setBookmakrs] = useState([]);
   const [notFoundedBlogs, setNotFoundedBlogs] = useState<boolean>(false);
   const [filterKey, setFilterKey] = useState<string>("");
 
@@ -39,6 +43,10 @@ const Blogs: FC = () => {
   useEffect(() => {
     (async () => {
       const response = await fetchBlogs(page);
+      const bookmarkedBlogs = await getBookmarks();
+      if (typeof bookmarkedBlogs == "object") {
+        setBookmakrs(bookmarkedBlogs);
+      }
 
       if (response?.length > 0) {
         setRes(response);
@@ -66,6 +74,8 @@ const Blogs: FC = () => {
     navigate("/create");
   };
 
+  console.log(bookmakrs);
+
   return (
     <BlogWrapper>
       <ArticlesWrapper>
@@ -91,7 +101,17 @@ const Blogs: FC = () => {
         </BannerWrapper>
         <BookmarkedBlogs>
           <h1>Blogs You Have Bookmarked</h1>
-          <Bookmarked></Bookmarked>
+          <Bookmarked>
+            {bookmakrs?.map(({ image, title, content }) => (
+              <div>
+                <img src={image ? image : NoImage} />
+                <div>
+                  <p>{title}</p>
+                  <span>{content}</span>
+                </div>
+              </div>
+            ))}
+          </Bookmarked>
         </BookmarkedBlogs>
       </DetailsWrapper>
     </BlogWrapper>
