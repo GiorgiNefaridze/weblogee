@@ -17,8 +17,22 @@ import {
 
 import { axiosInstance } from "../../api/axiosInstance";
 
-const BlogCard: FC<IData> = (props) => {
-  const { title, avatar, categories, content, image, name, date, _id } = props;
+interface IProps extends IData {
+  setSelected: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const BlogCard: FC<IProps> = (props) => {
+  const {
+    title,
+    avatar,
+    categories,
+    content,
+    image,
+    name,
+    date,
+    _id,
+    setSelected,
+  } = props;
 
   const navigate = useNavigate();
 
@@ -42,6 +56,7 @@ const BlogCard: FC<IData> = (props) => {
       blog_id: _id,
     });
 
+    setSelected((prev) => !prev);
     if (status === 200) {
       setFill(false);
     } else {

@@ -108,8 +108,9 @@ export const BannerWrapper = styled.div`
 `;
 
 export const BookmarkedBlogs = styled.div`
-  width: 80%;
-  background-color: red;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
   font-family: "Roboto", sans-serif;
   display: flex;
   flex-direction: column;
@@ -121,4 +122,15 @@ export const BookmarkedBlogs = styled.div`
   }
 `;
 
-export const Bookmarked = styled.div``;
+export const Bookmarked = styled.div`
+  width: 90%;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px 0;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+`;

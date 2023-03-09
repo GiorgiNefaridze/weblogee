@@ -1,17 +1,20 @@
 import { FC, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 
 import BlogCard from "../BlogCard/BlogCard";
 import Loader from "../Loader/Loader";
 import useFetchBlogs from "../../hooks/useFetchBlogs";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import BookmarkedBlog from "../BookmarkedBlog/BookmarkedBlog";
 import Filtering from "../Filtering/Filtering";
+import getBookmarks from "../../hooks/useFetBookmarks";
 import { BlogContext } from "../../context/blogContext";
-import { getBookmarks } from "../../hooks/useGetBookmarks";
 import { IData } from "../../hooks/useFetchBlogs";
 
 import Notes from "../../../public/notes.jpg";
-import NoImage from "../../../public/no_image.jpg";
+import NoBlog from "../../../public/no-blog.png";
 
 import {
   BlogWrapper,
@@ -26,7 +29,7 @@ import {
 
 const Blogs: FC = () => {
   const [res, setRes] = useState("");
-  const [bookmakrs, setBookmakrs] = useState([]);
+  const [selected, setSelected] = useState(false);
   const [notFoundedBlogs, setNotFoundedBlogs] = useState<boolean>(false);
   const [filterKey, setFilterKey] = useState<string>("");
 
@@ -36,6 +39,11 @@ const Blogs: FC = () => {
 
   const { fetchBlogs, loader } = useFetchBlogs();
   const { infiniteScroll, page, scrollRef } = useInfiniteScroll();
+  const {
+    fetchBookmarkes,
+    noBookmarkedBlogs,
+    loader: fetching,
+  } = getBookmarks();
   const { blogs } = BlogContext();
 
   infiniteScroll(BlogContainerRef?.current);
@@ -43,16 +51,18 @@ const Blogs: FC = () => {
   useEffect(() => {
     (async () => {
       const response = await fetchBlogs(page);
-      const bookmarkedBlogs = await getBookmarks();
-      if (typeof bookmarkedBlogs == "object") {
-        setBookmakrs(bookmarkedBlogs);
-      }
 
       if (response?.length > 0) {
         setRes(response);
       }
     })();
   }, [page]);
+
+  useEffect(() => {
+    (async () => {
+      await fetchBookmarkes();
+    })();
+  }, [selected]);
 
   useEffect(() => {
     BlogContainerRef?.current?.addEventListener("scroll", infiniteScroll);
@@ -74,8 +84,6 @@ const Blogs: FC = () => {
     navigate("/create");
   };
 
-  console.log(bookmakrs);
-
   return (
     <BlogWrapper>
       <ArticlesWrapper>
@@ -83,7 +91,7 @@ const Blogs: FC = () => {
         <Filtering setFilterKey={setFilterKey} />
         <BlogsWrapper ref={BlogContainerRef}>
           {blogs?.map((blog: IData, idx) => (
-            <BlogCard key={idx} {...blog} />
+            <BlogCard setSelected={setSelected} key={idx} {...blog} />
           ))}
         </BlogsWrapper>
         {notFoundedBlogs && res?.length && (
@@ -100,18 +108,30 @@ const Blogs: FC = () => {
           <img src={Notes} />
         </BannerWrapper>
         <BookmarkedBlogs>
-          <h1>Blogs You Have Bookmarked</h1>
-          <Bookmarked>
-            {bookmakrs?.map(({ image, title, content }) => (
-              <div>
-                <img src={image ? image : NoImage} />
-                <div>
-                  <p>{title}</p>
-                  <span>{content}</span>
-                </div>
-              </div>
+          {!noBookmarkedBlogs?.isTrue && <h1>Blogs You Have Bookmarked</h1>}
+          {noBookmarkedBlogs?.isTrue && <h1>{noBookmarkedBlogs?.data}</h1>}
+
+          {!noBookmarkedBlogs?.isTrue &&
+            fetching &&
+            noBookmarkedBlogs?.data?.map((blog: IData, idx) => (
+              <Stack spacing={0.5}>
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={"10rem"}
+                />
+              </Stack>
             ))}
-          </Bookmarked>
+
+          {!noBookmarkedBlogs?.isTrue &&
+            !fetching &&
+            noBookmarkedBlogs?.data?.map((blog: IData, idx) => (
+              <BookmarkedBlog key={idx} {...blog} />
+            ))}
+
+          {noBookmarkedBlogs?.isTrue && (
+            <img style={{ width: "40%", opacity: "0.5" }} src={NoBlog} />
+          )}
         </BookmarkedBlogs>
       </DetailsWrapper>
     </BlogWrapper>
