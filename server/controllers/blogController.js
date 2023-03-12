@@ -25,7 +25,7 @@ export const getAllBlogs = async (req, res) => {
     const data = await fetchUser(blogs);
 
     if (data == "undefind" || data?.length < 1) {
-      throw new Error("Blog not found.Try with different keywords");
+      throw new Error("Blog not found.Try with different keywords...");
     }
 
     res.status(200).json({ response: data });
@@ -83,7 +83,7 @@ export const createBlog = async (req, res) => {
   }
 };
 
-export const setBookmark = async (req, res) => {
+export const checkBookmarks = async (req, res) => {
   try {
     const { blog_id } = req.body;
     const header = req.headers;
@@ -95,16 +95,75 @@ export const setBookmark = async (req, res) => {
       const user = await User.findOne({ _id: verifyToken.id });
 
       if (user.bookmarkedBlogs.includes(blog_id)) {
-        res.status(201).json({ status: 200 });
-        return;
-      }
-
-      if (user && !user.bookmarkedBlogs.includes(blog_id)) {
-        await User.findByIdAndUpdate(user?._id, {
-          bookmarkedBlogs: [...user.bookmarkedBlogs, blog_id],
-        });
+        res.status(200).json({ status: 200 });
+      } else {
+        res.status(200).json({ status: 500 });
       }
     }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const setBookmarks = async (req, res) => {
+  try {
+    const { blog_id } = req.body;
+    const header = req.headers;
+
+    const token = getValidToken(header);
+    const verifyToken = veryfyToken(token);
+
+    if (verifyToken?.id?.length > 0) {
+      const user = await User.findOne({ _id: verifyToken.id });
+
+      if (user.bookmarkedBlogs.includes(blog_id)) {
+        const filteredBlogs = user?.bookmarkedBlogs?.filter(
+          (id) => id !== blog_id
+        );
+
+        await User.findByIdAndUpdate(user.id, {
+          bookmarkedBlogs: filteredBlogs,
+        });
+        res.status(200).json({ status: 200 });
+        return;
+      } else {
+        await User.findByIdAndUpdate(user.id, {
+          bookmarkedBlogs: [...user.bookmarkedBlogs, blog_id],
+        });
+        res.status(201).json({ status: 201 });
+        return;
+      }
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getBookmarks = async (req, res) => {
+  try {
+    const header = req.headers;
+
+    const token = getValidToken(header);
+    const verifyToken = veryfyToken(token);
+
+    const blogs = [];
+
+    if (verifyToken?.id.length > 0) {
+      const user = await User.findOne({ _id: verifyToken?.id });
+
+      if (user?.bookmarkedBlogs?.length > 0) {
+        for (let blog_id of user?.bookmarkedBlogs) {
+          const blog = await Blogs.findOne({
+            _id: blog_id,
+          }).lean();
+          console.log(user);
+          blogs.push({ ...blog, name: user?.name, avatar: user?.image });
+        }
+      } else {
+        throw new Error("There Is No Bookmarked Blogs");
+      }
+    }
+    res.status(200).json({ response: blogs });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

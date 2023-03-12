@@ -1,6 +1,12 @@
 import { Router } from "express";
 
-import { getAllBlogs, createBlog, setBookmark } from "../controllers/blogController.js";
+import {
+  getAllBlogs,
+  createBlog,
+  checkBookmarks,
+  setBookmarks,
+  getBookmarks,
+} from "../controllers/blogController.js";
 
 const router = Router();
 
@@ -10,7 +16,13 @@ router.get("/getBlogs", getAllBlogs);
 //Add Blogs
 router.post("/create", createBlog);
 
-//Set blog into bookmarks
-router.post("/setBookmark", setBookmark);
+//Check blog in bookmarks
+router.post("/checkBookmarks", checkBookmarks);
+
+//Set bookmarks blogs
+router.post("/setBookmarks", setBookmarks);
+
+//Get All Bookmarks
+router.get("/getBookmarks", getBookmarks);
 
 export default router;
