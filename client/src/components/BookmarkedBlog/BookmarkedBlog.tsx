@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { FaUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 import { IData } from "../../hooks/useFetchBlogs";
 
@@ -10,14 +11,11 @@ import {
   UserDetails,
 } from "./BookmarkedBlog.style";
 
-const BookmarkedBlog: FC<IData> = ({
-  avatar,
-  content,
-  date,
-  image,
-  name,
-  title,
-}) => {
+const BookmarkedBlog: FC<IData> = (props) => {
+  const { avatar, content, date, image, name, title } = props;
+
+  const navigate = useNavigate();
+
   const bdate = new Date(date);
   const blogdate = bdate.toLocaleDateString("en-US", {
     month: "short",
@@ -25,8 +23,12 @@ const BookmarkedBlog: FC<IData> = ({
     year: "numeric",
   });
 
+  const handleClick = () => {
+    navigate(`/blog/${title}`, { state: { ...props, date: blogdate } });
+  };
+
   return (
-    <BookmarkedBlogWrapper>
+    <BookmarkedBlogWrapper onClick={handleClick}>
       <img src={image ? image : NoImage} />
       <Body>
         <p>{title.length > 45 ? title.slice(0, 45) + "..." : title}</p>

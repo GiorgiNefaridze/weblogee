@@ -11,6 +11,7 @@ import BookmarkedBlog from "../BookmarkedBlog/BookmarkedBlog";
 import Filtering from "../Filtering/Filtering";
 import getBookmarks from "../../hooks/useFetBookmarks";
 import { BlogContext } from "../../context/blogContext";
+import { filteredBlogs } from "../../utils/renderFilteredBlogs";
 import { IData } from "../../hooks/useFetchBlogs";
 
 import Notes from "../../../public/notes.jpg";
@@ -44,7 +45,9 @@ const Blogs: FC = () => {
     noBookmarkedBlogs,
     loader: fetching,
   } = getBookmarks();
+
   const { blogs } = BlogContext();
+  const filteredBlog = filteredBlogs(blogs, filterKey);
 
   infiniteScroll(BlogContainerRef?.current);
 
@@ -90,7 +93,7 @@ const Blogs: FC = () => {
         {loader && <Loader />}
         <Filtering setFilterKey={setFilterKey} />
         <BlogsWrapper ref={BlogContainerRef}>
-          {blogs?.map((blog: IData, idx) => (
+          {filteredBlog?.map((blog: IData, idx) => (
             <BlogCard setSelected={setSelected} key={idx} {...blog} />
           ))}
         </BlogsWrapper>

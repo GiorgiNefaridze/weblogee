@@ -4,10 +4,15 @@ export const BookmarkedBlogWrapper = styled.div`
   width: 100%;
   height: 38%;
   display: flex;
-  padding: 0.2rem;
+  padding: 0.5rem;
   box-sizing: border-box;
-  background-color: #ededed;
-  border-radius: 5px;
+  background-color: #ebebeb47;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ededed;
+  }
 
   img {
     width: 50%;

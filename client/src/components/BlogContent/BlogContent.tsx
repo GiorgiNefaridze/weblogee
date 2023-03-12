@@ -15,6 +15,7 @@ import {
 } from "./BlogContent.style";
 
 import { axiosInstance } from "../../api/axiosInstance";
+import { Categories, CategoriesWrapper } from "../CreateBlog/CreateBlog.style";
 
 const BlogContent: FC = () => {
   const { state } = useLocation();
@@ -43,6 +44,8 @@ const BlogContent: FC = () => {
   };
 
   useEffect(() => {
+    console.log(state);
+
     checkedInBookmarked();
   }, []);
 
@@ -86,6 +89,13 @@ const BlogContent: FC = () => {
           <p>{state?.content}</p>
         </div>
       </ContentWrapper>
+      <CategoriesWrapper>
+        {state?.categories?.map((cat: string, idx: number) => (
+          <Categories selected key={idx}>
+            {cat}
+          </Categories>
+        ))}
+      </CategoriesWrapper>
       <button onClick={handleClick}>Go back</button>
     </BlogContentWrapper>
   );

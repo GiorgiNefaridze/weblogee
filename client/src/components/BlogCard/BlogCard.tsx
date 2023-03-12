@@ -46,7 +46,8 @@ const BlogCard: FC<IProps> = (props) => {
   });
 
   const handleClick = () => {
-    navigate(`/blog/${title}`, { state: { ...props, date: blogdate } });
+    const { setSelected, ...rest } = props;
+    navigate(`/blog/${title}`, { state: { ...rest, date: blogdate } });
   };
 
   const setBlogInBookmarked = async () => {
