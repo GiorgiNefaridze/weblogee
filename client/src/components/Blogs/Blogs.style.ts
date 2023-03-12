@@ -116,6 +116,10 @@ export const BookmarkedBlogs = styled.div`
   flex-direction: column;
   gap: 15px 0;
 
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+
   h1 {
     font-weight: bold;
     font-size: 2rem;

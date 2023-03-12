@@ -1,4 +1,5 @@
 import { FC, useState, useEffect, useRef } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
@@ -46,6 +47,8 @@ const Blogs: FC = () => {
     loader: fetching,
   } = getBookmarks();
 
+  const [animationParent] = useAutoAnimate();
+
   const { blogs } = BlogContext();
   const filteredBlog = filteredBlogs(blogs, filterKey);
 
@@ -71,7 +74,7 @@ const Blogs: FC = () => {
     BlogContainerRef?.current?.addEventListener("scroll", infiniteScroll);
 
     BlogContainerRef?.current?.addEventListener("scroll", () => {
-      if (res?.length > 0 && scrollRef.current) {
+      if (res?.length > 0 && scrollRef.current && filterKey?.length < 1) {
         setNotFoundedBlogs(true);
       } else {
         setNotFoundedBlogs(false);
@@ -110,9 +113,8 @@ const Blogs: FC = () => {
           </div>
           <img src={Notes} />
         </BannerWrapper>
-        <BookmarkedBlogs>
+        <BookmarkedBlogs ref={animationParent}>
           {!noBookmarkedBlogs?.isTrue && <h1>Blogs You Have Bookmarked</h1>}
-          {noBookmarkedBlogs?.isTrue && <h1>{noBookmarkedBlogs?.data}</h1>}
 
           {!noBookmarkedBlogs?.isTrue &&
             fetching &&
@@ -131,10 +133,6 @@ const Blogs: FC = () => {
             noBookmarkedBlogs?.data?.map((blog: IData, idx) => (
               <BookmarkedBlog key={idx} {...blog} />
             ))}
-
-          {noBookmarkedBlogs?.isTrue && (
-            <img style={{ width: "40%", opacity: "0.5" }} src={NoBlog} />
-          )}
         </BookmarkedBlogs>
       </DetailsWrapper>
     </BlogWrapper>
