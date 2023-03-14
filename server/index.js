@@ -10,7 +10,10 @@ import blogs from "./routes/blogRoutes.js";
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGO_DB)
+  .connect(process.env.MONGO_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Database connection successfuly"))
   .catch(() => console.log("Something went wrong"));
 
