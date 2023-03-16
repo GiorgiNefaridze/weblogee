@@ -5,8 +5,9 @@ import rateLimit from "express-rate-limit";
 dotenv.config();
 
 const limiter = rateLimit({
-  windowMs: Number(process.env.windowMs),
-  max: Number(process.env.max),
+  windowMs: 25 * 60 * 1000,
+  max: 2,
+  message: { message: process.env.REQ_LIMITER },
 });
 
 import { register, login, getUserData } from "../controllers/userController.js";
@@ -14,10 +15,10 @@ import { register, login, getUserData } from "../controllers/userController.js";
 const router = Router();
 
 //Regitser user route
-router.post("/register", register);
+router.post("/register", limiter, register);
 
 //Login user route
-router.post("/login", login);
+router.post("/login", limiter, login);
 
 //Get user data
 router.post("/user-data", getUserData);

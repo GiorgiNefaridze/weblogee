@@ -1,4 +1,14 @@
 import { Router } from "express";
+import dotenv from "dotenv";
+import rateLimit from "express-rate-limit";
+
+dotenv.config();
+
+const limiter = rateLimit({
+  windowMs: 20 * 60 * 1000,
+  max: 2,
+  message: { error: process.env.REQ_LIMITER },
+});
 
 import {
   getAllBlogs,
@@ -14,7 +24,7 @@ const router = Router();
 router.get("/getBlogs", getAllBlogs);
 
 //Add Blogs
-router.post("/create", createBlog);
+router.post("/create", limiter, createBlog);
 
 //Check blog in bookmarks
 router.post("/checkBookmarks", checkBookmarks);
