@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
@@ -7,6 +7,8 @@ import { VscBookmark } from "react-icons/vsc";
 import NoImage from "../../../public/no_image.jpg";
 import { IData } from "../../hooks/useFetchBlogs";
 import { checkBookmarkedBlogs } from "../../utils/checkBookmarkedBlogs";
+import { UserContext } from "../../context/userContext";
+import { axiosInstance } from "../../api/axiosInstance";
 
 import {
   BlogCategories,
@@ -14,8 +16,6 @@ import {
   BlogHeader,
   CardWrapper,
 } from "./BlogCard.style";
-
-import { axiosInstance } from "../../api/axiosInstance";
 
 interface IProps extends IData {
   setSelected: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,6 +37,7 @@ const BlogCard: FC<IProps> = (props) => {
   const navigate = useNavigate();
 
   const { fill, checkedInBookmarked, setFill } = checkBookmarkedBlogs(_id);
+  const { user } = UserContext();
 
   const bdate = new Date(date);
   const blogdate = bdate.toLocaleDateString("en-US", {
@@ -51,22 +52,28 @@ const BlogCard: FC<IProps> = (props) => {
   };
 
   const setBlogInBookmarked = async () => {
-    const {
-      data: { status },
-    } = await axiosInstance().post("/api/blogs/setBookmarks", {
-      blog_id: _id,
-    });
+    try {
+      const {
+        data: { status },
+      } = await axiosInstance().post("/api/blogs/setBookmarks", {
+        blog_id: _id,
+      });
 
-    setSelected((prev) => !prev);
-    if (status === 200) {
-      setFill(false);
-    } else {
-      setFill(true);
+      setSelected((prev) => !prev);
+      if (status === 200) {
+        setFill(false);
+      } else {
+        setFill(true);
+      }
+    } catch (error) {
+      navigate("/login");
     }
   };
 
   useEffect(() => {
-    checkedInBookmarked();
+    if (user?.auth) {
+      checkedInBookmarked();
+    }
   }, []);
 
   return (

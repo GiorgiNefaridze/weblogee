@@ -18,6 +18,7 @@ export interface IForm {
 
 const Register: FC = () => {
   const [image, setImage] = useState<string | ArrayBuffer>("");
+  const [loader, setLoader] = useState<boolean>(false);
 
   const {
     register,
@@ -27,7 +28,9 @@ const Register: FC = () => {
   } = useForm<IForm>();
 
   const submitForm = async (data: IForm) => {
+    setLoader(true);
     const { status, message } = await useRegister({ ...data, image });
+    setLoader(false);
 
     if (message?.length > 0 && status === 201) {
       reset({ name: "", email: "", password: "", image: "" });
@@ -105,7 +108,16 @@ const Register: FC = () => {
           <label htmlFor="ipload_image">Upload image</label>
           <FaFileUpload />
         </UploadImage>
-        <button type="submit">Register</button>
+        <button type="submit">
+          {loader ? (
+            <i
+              className="fa fa-circle-o-notch fa-spin"
+              style={{ fontSize: "20px" }}
+            ></i>
+          ) : (
+            "Register"
+          )}
+        </button>
       </form>
       <Toaster position="bottom-right" reverseOrder={false} />
     </RegisterWrapper>

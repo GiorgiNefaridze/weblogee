@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsBookmarkFill } from "react-icons/bs";
 import { VscBookmark } from "react-icons/vsc";
@@ -6,6 +6,8 @@ import { FaUserCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 import { checkBookmarkedBlogs } from "../../utils/checkBookmarkedBlogs";
+import { UserContext } from "../../context/userContext";
+import { axiosInstance } from "../../api/axiosInstance";
 
 import NoImage from "../../../public/no_image.jpg";
 import {
@@ -13,8 +15,6 @@ import {
   HeaderWrapper,
   ContentWrapper,
 } from "./BlogContent.style";
-
-import { axiosInstance } from "../../api/axiosInstance";
 import { Categories, CategoriesWrapper } from "../CreateBlog/CreateBlog.style";
 
 const BlogContent: FC = () => {
@@ -22,6 +22,7 @@ const BlogContent: FC = () => {
   const { fill, checkedInBookmarked, setFill } = checkBookmarkedBlogs(
     state?._id
   );
+  const { user } = UserContext();
 
   const navigate = useNavigate();
 
@@ -30,24 +31,27 @@ const BlogContent: FC = () => {
   };
 
   const setBlogInBookmarked = async () => {
-    const {
-      data: { status },
-    } = await axiosInstance().post("/api/blogs/setBookmarks", {
-      blog_id: state?._id,
-    });
-
-    if (status === 200) {
-      setFill(false);
-    } else {
-      setFill(true);
+    try {
+      const {
+        data: { status },
+      } = await axiosInstance().post("/api/blogs/setBookmarks", {
+        blog_id: state?._id,
+      });
+      if (status === 200) {
+        setFill(false);
+      } else {
+        setFill(true);
+      }
+    } catch (error) {
+      navigate("/login");
     }
   };
 
   useEffect(() => {
-    console.log(state);
-
-    checkedInBookmarked();
-  }, []);
+    if (user?.auth) {
+      checkedInBookmarked();
+    }
+  }, [state]);
 
   return (
     <BlogContentWrapper>

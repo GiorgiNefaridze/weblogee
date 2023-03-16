@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,8 @@ export interface IForm {
 export const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 const Login: FC = () => {
+  const [loader, setLoader] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -28,7 +30,9 @@ const Login: FC = () => {
   const { setUser } = UserContext();
 
   const submitForm = async (data: IForm) => {
+    setLoader(true);
     const { status, message, user } = await useLogin(data);
+    setLoader(false);
 
     if (status === 500 && message?.length) {
       toast.error(message);
@@ -70,7 +74,16 @@ const Login: FC = () => {
           label="Enter your password"
           error={errors?.password?.message}
         />
-        <button type="submit">Login</button>
+        <button type="submit">
+          {loader ? (
+            <i
+              className="fa fa-circle-o-notch fa-spin"
+              style={{ fontSize: "20px" }}
+            ></i>
+          ) : (
+            "Login"
+          )}
+        </button>
       </form>
       <Toaster position="bottom-right" />
     </LoginWrapper>

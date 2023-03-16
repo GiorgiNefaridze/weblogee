@@ -16,7 +16,6 @@ import { filteredBlogs } from "../../utils/renderFilteredBlogs";
 import { IData } from "../../hooks/useFetchBlogs";
 
 import Notes from "../../../public/notes.jpg";
-import NoBlog from "../../../public/no-blog.png";
 
 import {
   BlogWrapper,
@@ -26,7 +25,6 @@ import {
   NoContentWrapper,
   BannerWrapper,
   BookmarkedBlogs,
-  Bookmarked,
 } from "./Blogs.style";
 
 const Blogs: FC = () => {

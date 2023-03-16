@@ -4,6 +4,7 @@ export const BlogWrapper = styled.div`
   height: 89.3vh;
   display: flex;
   padding: 0 4%;
+  position: relative;
 `;
 
 export const ArticlesWrapper = styled.div`
