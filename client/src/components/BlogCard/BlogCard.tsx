@@ -8,6 +8,7 @@ import NoImage from "../../../public/no_image.jpg";
 import { IData } from "../../hooks/useFetchBlogs";
 import { checkBookmarkedBlogs } from "../../utils/checkBookmarkedBlogs";
 import { UserContext } from "../../context/userContext";
+import { checkBookmarks } from "../../hooks/useCheckBookmarks";
 import { axiosInstance } from "../../api/axiosInstance";
 
 import {
@@ -71,10 +72,11 @@ const BlogCard: FC<IProps> = (props) => {
   };
 
   useEffect(() => {
-    if (user?.auth) {
-      checkedInBookmarked();
+    if (!user?.auth) {
+      setFill(false);
     }
-  }, []);
+    checkedInBookmarked();
+  }, [user?.auth]);
 
   return (
     <CardWrapper>

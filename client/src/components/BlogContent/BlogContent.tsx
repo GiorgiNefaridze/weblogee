@@ -48,10 +48,11 @@ const BlogContent: FC = () => {
   };
 
   useEffect(() => {
-    if (user?.auth) {
-      checkedInBookmarked();
+    if (!user?.auth) {
+      setFill(false);
     }
-  }, [state]);
+    checkedInBookmarked();
+  }, [user?.auth]);
 
   return (
     <BlogContentWrapper>

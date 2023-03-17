@@ -27,7 +27,7 @@ const getBookmarks = () => {
     setLoader(false);
   };
 
-  return { fetchBookmarkes, noBookmarkedBlogs, loader };
+  return { fetchBookmarkes, noBookmarkedBlogs, loader, setNoBookmarkedBlogs };
 };
 
 export default getBookmarks;

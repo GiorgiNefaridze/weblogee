@@ -38,6 +38,7 @@ export const BlogsWrapper = styled.div`
   flex-direction: column;
   gap: 35px 0;
   overflow-y: auto;
+  position: relative;
 
   &::-webkit-scrollbar {
     width: 0px;

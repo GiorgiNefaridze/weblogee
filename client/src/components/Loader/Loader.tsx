@@ -3,12 +3,7 @@ import { LoaderWrapper } from "./Loader.style";
 const Loader = () => {
   return (
     <LoaderWrapper>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <div className="lds-ripple"></div>
       <div></div>
       <div></div>
     </LoaderWrapper>

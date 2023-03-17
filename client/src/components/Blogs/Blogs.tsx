@@ -14,6 +14,7 @@ import getBookmarks from "../../hooks/useFetBookmarks";
 import { BlogContext } from "../../context/blogContext";
 import { filteredBlogs } from "../../utils/renderFilteredBlogs";
 import { IData } from "../../hooks/useFetchBlogs";
+import { UserContext } from "../../context/userContext";
 
 import Notes from "../../../public/notes.jpg";
 
@@ -43,7 +44,9 @@ const Blogs: FC = () => {
     fetchBookmarkes,
     noBookmarkedBlogs,
     loader: fetching,
+    setNoBookmarkedBlogs,
   } = getBookmarks();
+  const { user } = UserContext();
 
   const [animationParent] = useAutoAnimate();
 
@@ -63,10 +66,13 @@ const Blogs: FC = () => {
   }, [page]);
 
   useEffect(() => {
+    if (!user?.auth) {
+      setNoBookmarkedBlogs({ isTrue: false, data: [] });
+    }
     (async () => {
       await fetchBookmarkes();
     })();
-  }, [selected]);
+  }, [selected, user?.auth]);
 
   useEffect(() => {
     BlogContainerRef?.current?.addEventListener("scroll", infiniteScroll);
@@ -91,9 +97,9 @@ const Blogs: FC = () => {
   return (
     <BlogWrapper>
       <ArticlesWrapper>
-        {loader && <Loader />}
         <Filtering setFilterKey={setFilterKey} />
         <BlogsWrapper ref={BlogContainerRef}>
+          {loader && <Loader />}
           {filteredBlog?.map((blog: IData, idx) => (
             <BlogCard setSelected={setSelected} key={idx} {...blog} />
           ))}
@@ -112,7 +118,9 @@ const Blogs: FC = () => {
           <img src={Notes} />
         </BannerWrapper>
         <BookmarkedBlogs ref={animationParent}>
-          {!noBookmarkedBlogs?.isTrue && <h1>Blogs You Have Bookmarked</h1>}
+          {!noBookmarkedBlogs?.isTrue && !fetching && (
+            <h1>Blogs You Have Bookmarked</h1>
+          )}
 
           {!noBookmarkedBlogs?.isTrue &&
             fetching &&

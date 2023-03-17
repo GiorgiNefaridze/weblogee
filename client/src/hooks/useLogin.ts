@@ -24,6 +24,7 @@ export const useLogin: ILogin = async (userData) => {
 
     return { status: 200, message: "User logined successfully", user };
   } catch (error) {
+    console.log(error);
     return {
       status: 500,
       message: isAxiosError(error) ? error.response?.data.message : null,
