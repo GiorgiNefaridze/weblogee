@@ -156,8 +156,19 @@ export const getBookmarks = async (req, res) => {
           const blog = await Blogs.findOne({
             _id: blog_id,
           }).lean();
-          console.log(user);
-          blogs.push({ ...blog, name: user?.name, avatar: user?.image });
+
+          const userId = blog?.author.toString().split('("');
+
+          const userDetail = await User.findOne({
+            _id: userId,
+          }).lean();
+
+          blogs.push({
+            ...blog,
+            name: userDetail?.name,
+            image: blog?.image,
+            avatar: userDetail?.image,
+          });
         }
       } else {
         throw new Error("There Is No Bookmarked Blogs");
