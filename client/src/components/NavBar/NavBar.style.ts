@@ -11,6 +11,10 @@ export const NavWrapper = styled.nav`
   img {
     width: 10rem;
     cursor: pointer;
+
+    @media only screen and (max-width: 700px) {
+      width: 8rem;
+    }
   }
 `;
 
@@ -19,6 +23,14 @@ export const UserInfo = styled.div`
   align-items: center;
   justify-content: center;
   gap: 0 20px;
+
+  @media only screen and (max-width: 550px) {
+    gap: 0 7px;
+  }
+
+  @media only screen and (max-width: 450px) {
+    gap: 0px;
+  }
 
   div {
     display: flex;
@@ -42,6 +54,10 @@ export const CreateBlog = styled.div`
   border-radius: 9px;
   padding: 9px;
   cursor: pointer;
+
+  @media only screen and (max-width: 700px) {
+    padding: 6px;
+  }
 
   p {
     font-size: 14.5px;

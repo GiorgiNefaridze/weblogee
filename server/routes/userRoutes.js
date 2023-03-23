@@ -5,7 +5,7 @@ import rateLimit from "express-rate-limit";
 dotenv.config();
 
 const limiter = rateLimit({
-  windowMs: 25 * 60 * 1000,
+  windowMs: 0 * 60 * 1000,
   max: 2,
   message: { message: process.env.REQ_LIMITER },
 });

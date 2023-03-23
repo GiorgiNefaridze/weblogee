@@ -5,6 +5,18 @@ export const BlogWrapper = styled.div`
   display: flex;
   padding: 0 4%;
   position: relative;
+  box-sizing: border-box;
+
+  @media only screen and (max-width: 1380px) {
+    padding: 0 2%;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    height: auto;
+    flex-direction: column;
+    gap: 5rem 0px;
+    box-sizing: border-box;
+  }
 `;
 
 export const ArticlesWrapper = styled.div`
@@ -17,6 +29,11 @@ export const ArticlesWrapper = styled.div`
   border-right: 0.1px solid #a1a1a147;
   box-sizing: border-box;
   position: relative;
+
+  @media only screen and (max-width: 1200px) {
+    width: 100%;
+    border-right: none;
+  }
 `;
 
 export const DetailsWrapper = styled.div`
@@ -29,6 +46,10 @@ export const DetailsWrapper = styled.div`
   padding: 1% 3.5%;
   box-sizing: border-box;
   gap: 40px 0;
+
+  @media only screen and (max-width: 1200px) {
+    display: none;
+  }
 `;
 
 export const BlogsWrapper = styled.div`
@@ -52,11 +73,12 @@ export const NoContentWrapper = styled.div`
   font-family: "Roboto", sans-serif;
   padding: 1.2rem;
   text-transform: uppercase;
+  letter-spacing: 1px;
   margin: auto;
 `;
 
 export const BannerWrapper = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -65,6 +87,14 @@ export const BannerWrapper = styled.div`
   box-sizing: border-box;
   background-color: #ededed;
   border-radius: 15px;
+
+  @media only screen and (max-width: 1380px) {
+    padding: 0.7rem;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    display: none;
+  }
 
   div {
     width: 60%;
@@ -81,7 +111,7 @@ export const BannerWrapper = styled.div`
     p {
       color: grey;
       opacity: 0.8;
-      font-size: 13px;
+      font-size: 1rem;
     }
 
     button {
@@ -117,6 +147,12 @@ export const BookmarkedBlogs = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px 0;
+
+  @media only screen and (max-width: 1200px) {
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 
   &::-webkit-scrollbar {
     width: 0px;

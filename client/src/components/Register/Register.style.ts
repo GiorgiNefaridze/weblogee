@@ -17,6 +17,19 @@ export const RegisterWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px 0;
+
+    @media only screen and (max-width: 1600px) {
+      width: 55%;
+    }
+
+    @media only screen and (max-width: 1000px) {
+      width: 80%;
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 90%;
+    }
+
     button {
       color: white;
       border: none;
@@ -46,16 +59,33 @@ export const UploadImage = styled.div<IProps | HTMLElement>`
   border-radius: 7px;
   cursor: pointer;
 
+  @media only screen and (max-width: 700px) {
+    width: 25%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 30%;
+    padding: 8px 0px;
+  }
+
   label {
     font-family: "Roboto", sans-serif;
     font-size: 13px;
     font-weight: 400;
     color: ${({ fillWithGreen }) => (fillWithGreen ? "green" : "black")};
     cursor: pointer;
+
+    @media only screen and (max-width: 600px) {
+      font-size: 12px;
+    }
   }
 
   svg {
     color: ${({ fillWithGreen }) => (fillWithGreen ? "green" : "black")};
+
+    @media only screen and (max-width: 600px) {
+      font-size: 14px;
+    }
   }
 
   &:hover {

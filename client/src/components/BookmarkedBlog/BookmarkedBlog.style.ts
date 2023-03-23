@@ -10,6 +10,11 @@ export const BookmarkedBlogWrapper = styled.div`
   border-radius: 8px;
   cursor: pointer;
 
+  @media only screen and (max-width: 1200px) {
+    width: 45%;
+    height: 250px;
+  }
+
   &:hover {
     background-color: #ededed;
   }
@@ -18,6 +23,7 @@ export const BookmarkedBlogWrapper = styled.div`
     width: 50%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px;
   }
 `;
 

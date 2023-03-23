@@ -21,6 +21,18 @@ export const Content = styled.div`
   font-family: "Roboto", sans-serif;
   padding: 20px 0;
 
+  @media only screen and (max-width: 1450px) {
+    width: 50%;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    width: 70%;
+  }
+
+  @media only screen and (max-width: 630px) {
+    width: 90%;
+  }
+
   h2 {
     font-weight: bold;
     font-size: 1.3em;
@@ -98,6 +110,19 @@ export const Footer = styled.footer`
   align-content: center;
   border-top: 1px solid grey;
   padding: 20px 0;
+
+  @media only screen and (max-width: 1450px) {
+    width: 50%;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    width: 70%;
+  }
+
+  @media only screen and (max-width: 630px) {
+    width: 90%;
+  }
+
   button {
     outline: none;
     border: none;
@@ -122,6 +147,16 @@ export const CategoriesWrapper = styled.div`
   font-family: "Roboto", sans-serif;
   gap: 0 10px;
   cursor: pointer;
+
+  @media only screen and (max-width: 630px) {
+    flex-wrap: wrap;
+  }
+
+  div {
+    @media only screen and (max-width: 630px) {
+      margin-block: 6px;
+    }
+  }
 `;
 
 export const Categories = styled.div<IPros | HTMLElement>`

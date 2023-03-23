@@ -98,6 +98,18 @@ const Blogs: FC = () => {
     <BlogWrapper>
       <ArticlesWrapper>
         <Filtering setFilterKey={setFilterKey} />
+        {!filteredBlog?.length && filterKey.length ? (
+          <p
+            style={{
+              margin: "auto",
+              fontFamily: "Roboto",
+              fontSize: "1.4rem",
+              fontWeight: "bold",
+            }}
+          >
+            No Content Here...
+          </p>
+        ) : null}
         <BlogsWrapper ref={BlogContainerRef}>
           {loader && <Loader />}
           {filteredBlog?.map((blog: IData, idx) => (
@@ -125,7 +137,7 @@ const Blogs: FC = () => {
           {!noBookmarkedBlogs?.isTrue &&
             fetching &&
             noBookmarkedBlogs?.data?.map((blog: IData, idx) => (
-              <Stack spacing={0.5}>
+              <Stack key={idx} spacing={0.5}>
                 <Skeleton
                   variant="rectangular"
                   width={"100%"}
