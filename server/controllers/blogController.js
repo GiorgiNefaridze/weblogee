@@ -17,9 +17,9 @@ export const getAllBlogs = async (req, res) => {
     let blogs;
 
     if (page > 0) {
-      blogs = await Blogs.find({}).skip(page).limit(5);
+      blogs = await Blogs.find({}).skip(page).limit(5).sort({ date: -1 });
     } else {
-      blogs = await Blogs.find({}).skip(0).limit(5);
+      blogs = await Blogs.find({}).skip(0).limit(5).sort({ date: -1 });
     }
 
     const data = await fetchUser(blogs);
