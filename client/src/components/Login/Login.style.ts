@@ -14,6 +14,14 @@ export const LoginWrapper = styled.div`
     flex-direction: column;
     gap: 20px 0;
 
+    @media only screen and (max-width: 1000px) {
+      width: 60%;
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 90%;
+    }
+
     button {
       color: white;
       border: none;

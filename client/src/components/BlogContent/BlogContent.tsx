@@ -84,12 +84,14 @@ const BlogContent: FC = () => {
         )}
       </HeaderWrapper>
       <ContentWrapper>
-        {state?.image ? <img src={state?.image} /> : <img src={NoImage} />}
-        <h1>
-          {state?.title?.length > 30
-            ? state?.title.slice(0, 30) + "..."
-            : state?.title}
-        </h1>
+        <div>
+          {state?.image ? <img src={state?.image} /> : <img src={NoImage} />}
+          <h1>
+            {state?.title?.length > 30
+              ? state?.title.slice(0, 30) + "..."
+              : state?.title}
+          </h1>
+        </div>
         <div>
           <p>{state?.content}</p>
         </div>

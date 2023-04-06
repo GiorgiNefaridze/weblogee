@@ -60,7 +60,6 @@ const UserAvatar: FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem>Profile</MenuItem>
         <MenuItem onClick={handleLogOut}>Log out</MenuItem>
       </Menu>
     </div>
