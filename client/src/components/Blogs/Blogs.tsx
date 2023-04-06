@@ -28,6 +28,8 @@ import {
   BookmarkedBlogs,
 } from "./Blogs.style";
 
+import _debounce from "lodash/debounce";
+
 const Blogs: FC = () => {
   const [res, setRes] = useState("");
   const [selected, setSelected] = useState(false);
@@ -75,15 +77,31 @@ const Blogs: FC = () => {
   }, [selected, user?.auth]);
 
   useEffect(() => {
+    const conatiner = BlogContainerRef?.current;
     BlogContainerRef?.current?.addEventListener("scroll", infiniteScroll);
 
     BlogContainerRef?.current?.addEventListener("scroll", () => {
-      if (res?.length > 0 && scrollRef.current && filterKey?.length < 1) {
-        setNotFoundedBlogs(true);
-      } else {
+      if (
+        !(
+          conatiner?.scrollTop + conatiner?.offsetHeight >
+          conatiner?.scrollHeight - 1
+        )
+      ) {
         setNotFoundedBlogs(false);
       }
     });
+
+    BlogContainerRef?.current?.addEventListener(
+      "scroll",
+      _debounce(() => {
+        if (
+          conatiner?.scrollTop + conatiner?.offsetHeight >
+          conatiner?.scrollHeight - 1
+        ) {
+          setNotFoundedBlogs(true);
+        }
+      }, [1000])
+    );
 
     return () => {
       BlogContainerRef?.current?.removeEventListener("scroll", infiniteScroll);

@@ -25,7 +25,7 @@ export const getAllBlogs = async (req, res) => {
     const data = await fetchUser(blogs);
 
     if (data == "undefind" || data?.length < 1) {
-      throw new Error("Blog not found.Try with different keywords...");
+      throw new Error("Blog not found.Try different keywords...");
     }
 
     res.status(200).json({ response: data });
